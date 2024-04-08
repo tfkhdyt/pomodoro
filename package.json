@@ -1,5 +1,5 @@
 {
-  "name": "desktop",
+  "name": "pomodoro",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -33,6 +33,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@tauri-apps/api": "^1.5.3",
     "ts-pattern": "^5.1.1"
   }
 }
