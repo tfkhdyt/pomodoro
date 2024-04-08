@@ -7,6 +7,7 @@
 	} from '@tauri-apps/api/notification';
 	import { appWindow } from '@tauri-apps/api/window';
 	import clsx from 'clsx';
+	import { confirm } from '@tauri-apps/api/dialog';
 
 	const time = {
 		pomodoro: 0.3,
@@ -38,11 +39,11 @@
 	$: (async () => {
 		switch (type) {
 			case 'pomodoro':
-				await appWindow.setTitle('Time to focus!');
+				await appWindow.setTitle('Time to focus! — Pomodoro');
 				break;
 			case 'short-break':
 			case 'long-break':
-				await appWindow.setTitle('Time for a break!');
+				await appWindow.setTitle('Time for a break! — Pomodoro');
 				break;
 		}
 	})();
@@ -97,6 +98,18 @@
 		clearInterval(intervalId);
 		buttonState = 'paused';
 	}
+
+	async function resetReps() {
+		const confirmed = await confirm('Do you want to reset the pomodoro count?', {
+			type: 'warning'
+		});
+
+		if (confirmed) {
+			reps = 1;
+			type = 'pomodoro';
+			buttonState = 'paused';
+		}
+	}
 </script>
 
 <main
@@ -134,7 +147,7 @@
 					type="button"
 					on:click={buttonState === 'paused' ? startInterval : pause}
 					class={clsx(
-						'w-full absolute left-0 -top-1.5 flex h-full w-full items-center justify-center gap-3 rounded-md border border-[#ebebeb] bg-slate-50 p-2 text-2xl transition-all duration-200 lg:cursor-pointer uppercase font-bold',
+						'w-full absolute flex h-full w-full items-center justify-center gap-3 rounded-md border border-[#ebebeb] p-2 text-2xl transition-all duration-200 lg:cursor-pointer uppercase font-bold',
 						buttonState === 'paused'
 							? 'left-0 -top-1.5 bg-slate-50'
 							: '-left-0 -top-0 bg-slate-100',
@@ -149,7 +162,7 @@
 		</div>
 	</div>
 	<div class="text-lg mt-4">
-		<button type="button" class="text-gray-300 hover:text-white">
+		<button type="button" on:click={resetReps} class="text-gray-300 hover:text-white">
 			#{reps}
 		</button>
 		<h3 class="font-medium">

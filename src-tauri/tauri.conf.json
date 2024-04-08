@@ -17,6 +17,9 @@
 			},
 			"window": {
 				"setTitle": true
+			},
+			"dialog": {
+				"confirm": true
 			}
 		},
 		"bundle": {
