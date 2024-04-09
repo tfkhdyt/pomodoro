@@ -8,11 +8,12 @@
 	import { appWindow } from '@tauri-apps/api/window';
 	import clsx from 'clsx';
 	import { confirm } from '@tauri-apps/api/dialog';
+	import { fade } from 'svelte/transition';
 
 	const time = {
-		pomodoro: 0.3,
-		'short-break': 0.1,
-		'long-break': 0.2
+		pomodoro: 25,
+		'short-break': 5,
+		'long-break': 15
 	};
 
 	let type: 'pomodoro' | 'short-break' | 'long-break' = 'pomodoro';
@@ -159,40 +160,61 @@
 				.exhaustive()
 		)}
 	>
-		<h1 class={clsx('mx-auto font-bold text-3xl')}>
+		<h1 class="mx-auto font-bold text-3xl select-none cursor-default">
 			{match(type)
 				.with('pomodoro', () => 'Pomodoro')
 				.with('short-break', () => 'Short Break')
 				.with('long-break', () => 'Long Break')
 				.exhaustive()}
 		</h1>
-		<h2 class="font-bold text-9xl">{timer}</h2>
+		<h2 class="font-bold text-9xl tracking-wide select-none cursor-default">{timer}</h2>
 
-		<div class="w-56 mx-auto pt-3">
-			<div class="relative h-16 w-full bg-[#ebebeb] rounded-md">
+		<div class="relative flex">
+			<div class="w-56 mx-auto pt-3">
+				<div class="relative h-16 w-full bg-[#ebebeb] rounded-md">
+					<button
+						type="button"
+						on:click={buttonState === 'paused' ? startInterval : pause}
+						class={clsx(
+							'w-full absolute flex h-full items-center justify-center gap-3 rounded-md border border-[#ebebeb] p-2 text-2xl transition-all duration-200 lg:cursor-pointer uppercase font-bold',
+							buttonState === 'paused'
+								? 'left-0 -top-1.5 bg-slate-50'
+								: '-left-0 -top-0 bg-slate-100',
+							match(type)
+								.with('pomodoro', () => 'text-[#BA4949]')
+								.with('short-break', () => 'text-[#38858a]')
+								.with('long-break', () => 'text-[#397097]')
+								.exhaustive()
+						)}>{buttonState === 'paused' ? 'Start' : 'Pause'}</button
+					>
+				</div>
+			</div>
+			{#if buttonState === 'playing'}
 				<button
 					type="button"
-					on:click={buttonState === 'paused' ? startInterval : pause}
-					class={clsx(
-						'w-full absolute flex h-full w-full items-center justify-center gap-3 rounded-md border border-[#ebebeb] p-2 text-2xl transition-all duration-200 lg:cursor-pointer uppercase font-bold',
-						buttonState === 'paused'
-							? 'left-0 -top-1.5 bg-slate-50'
-							: '-left-0 -top-0 bg-slate-100',
-						match(type)
-							.with('pomodoro', () => 'text-[#BA4949]')
-							.with('short-break', () => 'text-[#38858a]')
-							.with('long-break', () => 'text-[#397097]')
-							.exhaustive()
-					)}>{buttonState === 'paused' ? 'Start' : 'Pause'}</button
+					on:click={nextStep}
+					class="absolute inset-y-0 right-14 mt-2"
+					transition:fade={{ duration: 200 }}
 				>
-			</div>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+						class="w-10 h-10"
+					>
+						<path
+							d="M5.055 7.06C3.805 6.347 2.25 7.25 2.25 8.69v8.122c0 1.44 1.555 2.343 2.805 1.628L12 14.471v2.34c0 1.44 1.555 2.343 2.805 1.628l7.108-4.061c1.26-.72 1.26-2.536 0-3.256l-7.108-4.061C13.555 6.346 12 7.249 12 8.689v2.34L5.055 7.061Z"
+						/>
+					</svg>
+				</button>
+			{/if}
 		</div>
 	</div>
 	<div class="text-lg mt-4">
 		<button type="button" on:click={resetReps} class="text-gray-300 hover:text-white">
 			#{reps}
 		</button>
-		<h3 class="font-medium">
+		<h3 class="font-medium select-none cursor-default">
 			{match(type)
 				.with('pomodoro', () => 'Time to focus!')
 				.otherwise(() => 'Time for a break!')}
