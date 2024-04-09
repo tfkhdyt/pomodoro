@@ -4,7 +4,10 @@
 	import { type PomodoroType, type ButtonState } from '@/types';
 	import ToggleButton from './buttons/ToggleButton.svelte';
 	import SkipButton from './buttons/SkipButton.svelte';
-	import SettingButton from './buttons/SettingButton.svelte';
+	import SettingDialog from './SettingDialog.svelte';
+	import type { LayoutData } from '../routes/$types';
+
+	export let data: LayoutData;
 
 	export let pomodoroType: PomodoroType;
 	export let timer: string;
@@ -35,7 +38,7 @@
 	</h2>
 
 	<div class="relative flex">
-		<SettingButton />
+		<SettingDialog {data} />
 		<ToggleButton {buttonState} {handleClick} {pomodoroType} />
 		{#if buttonState === 'playing'}
 			<SkipButton {nextStep} />

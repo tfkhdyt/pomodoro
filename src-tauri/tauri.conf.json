@@ -20,6 +20,17 @@
 			},
 			"dialog": {
 				"confirm": true
+			},
+			"path": {
+				"all": true
+			},
+			"fs": {
+				"scope": ["$CONFIG/**/*", "$APPCONFIG/*"],
+				"readFile": true,
+				"writeFile": true,
+				"readDir": true,
+				"createDir": true,
+				"exists": true
 			}
 		},
 		"bundle": {

@@ -8,24 +8,31 @@
 	import { appWindow } from '@tauri-apps/api/window';
 	import clsx from 'clsx';
 	import { confirm } from '@tauri-apps/api/dialog';
-	import type { KeyboardEventHandler } from 'svelte/elements';
 	import { onDestroy } from 'svelte';
 	import type { ButtonState, PomodoroType } from '@/types';
 	import Card from '@/components/Card.svelte';
 	import Count from '@/components/Count.svelte';
 	import Progress from '@/components/ui/progress/progress.svelte';
+	import type { LayoutData } from './$types';
 
-	const time = {
-		pomodoro: 25,
-		'short-break': 5,
-		'long-break': 15
-	};
+	export let data: LayoutData;
+
+	let permissionGranted: boolean;
+	(async () => {
+		permissionGranted = await isPermissionGranted();
+	})();
+
+	$: longBreakInterval = data.config.timer.longBreakInterval;
 
 	let pomodoroType: PomodoroType = 'pomodoro';
 	let buttonState: ButtonState = 'paused';
 
 	let reps = 1;
-	$: targetMinutes = time[pomodoroType];
+	$: targetMinutes = match(pomodoroType)
+		.with('pomodoro', () => data.config.timer.time.pomodoro)
+		.with('short-break', () => data.config.timer.time.shortBreak)
+		.with('long-break', () => data.config.timer.time.longBreak)
+		.exhaustive();
 	$: timeLeft = targetMinutes * 60;
 	$: timer = `${Math.floor(timeLeft / 60)
 		.toString()
@@ -33,11 +40,6 @@
 	$: progress = 100 - (timeLeft / 60 / targetMinutes) * 100;
 
 	let intervalId: number;
-
-	let permissionGranted: boolean;
-	(async () => {
-		permissionGranted = await isPermissionGranted();
-	})();
 
 	$: if (!permissionGranted) {
 		askNotifPermission();
@@ -83,16 +85,25 @@
 		}
 
 		pause();
-		if (pomodoroType === 'pomodoro' && reps % 4 !== 0) {
+		if (pomodoroType === 'pomodoro' && reps % longBreakInterval !== 0) {
 			sendNotification({ title: 'Time to take a short break!' });
 			pomodoroType = 'short-break';
-		} else if (pomodoroType === 'pomodoro' && reps % 4 === 0) {
+			// if (data.config.timer.autoStart.breaks) {
+			// 	startInterval();
+			// }
+		} else if (pomodoroType === 'pomodoro' && reps % longBreakInterval === 0) {
 			sendNotification({ title: 'Time to take a long break!' });
 			pomodoroType = 'long-break';
+			// if (data.config.timer.autoStart.breaks) {
+			// 	startInterval();
+			// }
 		} else {
 			reps++;
 			sendNotification({ title: 'Time to focus!' });
 			pomodoroType = 'pomodoro';
+			// if (data.config.timer.autoStart.pomodoros) {
+			// 	startInterval();
+			// }
 		}
 	}
 
@@ -129,29 +140,8 @@
 		}
 	}
 
-	let keysPressed: Record<string, boolean | undefined> = {};
-	const onKeyDown: KeyboardEventHandler<Window> = (e) => {
-		keysPressed[e.key] = true;
-
-		if (keysPressed['Control'] && e.code === 'Space' && buttonState === 'playing') {
-			return nextStep();
-		}
-		if (e.code === 'Space') {
-			return handleClick();
-		}
-		if (e.code === 'Backspace') {
-			return resetReps();
-		}
-	};
-
-	const onKeyUp: KeyboardEventHandler<Window> = (e) => {
-		keysPressed[e.key] = undefined;
-	};
-
 	onDestroy(() => clearInterval(intervalId));
 </script>
-
-<svelte:window on:keydown|preventDefault={onKeyDown} on:keyup|preventDefault={onKeyUp} />
 
 <main
 	class={clsx(
@@ -174,6 +164,6 @@
 				.exhaustive()
 		)}
 	/>
-	<Card {buttonState} {handleClick} {nextStep} {timer} {pomodoroType} />
+	<Card {buttonState} {handleClick} {nextStep} {timer} {pomodoroType} {data} />
 	<Count {pomodoroType} {reps} {resetReps} />
 </main>
