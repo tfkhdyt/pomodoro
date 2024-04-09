@@ -107,10 +107,10 @@
 		});
 
 		if (confirmed) {
+			pause();
 			reps = 1;
 			type = 'pomodoro';
 			timeLeft = targetMinutes * 60;
-			buttonState = 'paused';
 		}
 	}
 </script>
@@ -128,7 +128,7 @@
 	<div class="mx-auto mb-4">
 		<div
 			class={clsx(
-				'w-[500px] rounded-full',
+				'w-[450px] md:w-[500px] rounded-full',
 				match(type)
 					.with('pomodoro', () => 'bg-[#c15c5c]')
 					.with('short-break', () => 'bg-[#4c9196]')
@@ -152,7 +152,7 @@
 	</div>
 	<div
 		class={clsx(
-			'w-[500px] mx-auto py-10 rounded-xl space-y-6 transition duration-500',
+			'w-[450px] md:w-[500px] mx-auto py-8 md:py-10 rounded-xl space-y-4 md:space-y-6 transition duration-500',
 			match(type)
 				.with('pomodoro', () => 'bg-[#c15c5c]')
 				.with('short-break', () => 'bg-[#4c9196]')
@@ -160,23 +160,23 @@
 				.exhaustive()
 		)}
 	>
-		<h1 class="mx-auto font-bold text-3xl select-none cursor-default">
+		<h1 class="mx-auto font-bold text-2xl md:text-3xl select-none cursor-default">
 			{match(type)
 				.with('pomodoro', () => 'Pomodoro')
 				.with('short-break', () => 'Short Break')
 				.with('long-break', () => 'Long Break')
 				.exhaustive()}
 		</h1>
-		<h2 class="font-bold text-9xl tracking-wide select-none cursor-default">{timer}</h2>
+		<h2 class="font-bold text-8xl md:text-9xl tracking-wide select-none cursor-default">{timer}</h2>
 
 		<div class="relative flex">
-			<div class="w-56 mx-auto pt-3">
-				<div class="relative h-16 w-full bg-[#ebebeb] rounded-md">
+			<div class="w-48 md:w-56 mx-auto pt-3">
+				<div class="relative h-14 md:h-16 w-full bg-[#ebebeb] rounded-md">
 					<button
 						type="button"
 						on:click={buttonState === 'paused' ? startInterval : pause}
 						class={clsx(
-							'w-full absolute flex h-full items-center justify-center gap-3 rounded-md border border-[#ebebeb] p-2 text-2xl transition-all duration-200 lg:cursor-pointer uppercase font-bold',
+							'w-full absolute flex h-full items-center justify-center gap-3 rounded-md border border-[#ebebeb] p-2 text-xl md:text-2xl transition-all duration-200 lg:cursor-pointer uppercase font-bold',
 							buttonState === 'paused'
 								? 'left-0 -top-1.5 bg-slate-50'
 								: '-left-0 -top-0 bg-slate-100',
@@ -200,7 +200,7 @@
 						xmlns="http://www.w3.org/2000/svg"
 						viewBox="0 0 24 24"
 						fill="currentColor"
-						class="w-10 h-10"
+						class="w-8 h-8 md:w-10 md:h-10"
 					>
 						<path
 							d="M5.055 7.06C3.805 6.347 2.25 7.25 2.25 8.69v8.122c0 1.44 1.555 2.343 2.805 1.628L12 14.471v2.34c0 1.44 1.555 2.343 2.805 1.628l7.108-4.061c1.26-.72 1.26-2.536 0-3.256l-7.108-4.061C13.555 6.346 12 7.249 12 8.689v2.34L5.055 7.061Z"
@@ -210,7 +210,7 @@
 			{/if}
 		</div>
 	</div>
-	<div class="text-lg mt-4">
+	<div class="md:text-lg mt-4">
 		<button type="button" on:click={resetReps} class="text-gray-300 hover:text-white">
 			#{reps}
 		</button>
