@@ -1,10 +1,10 @@
 <script lang="ts">
 	import clsx from 'clsx';
 	import { match } from 'ts-pattern';
-	import { type PomodoroType, type ButtonState } from '../../types';
-	import { fade } from 'svelte/transition';
+	import { type PomodoroType, type ButtonState } from '@/types';
 	import ToggleButton from './buttons/ToggleButton.svelte';
 	import SkipButton from './buttons/SkipButton.svelte';
+	import SettingButton from './buttons/SettingButton.svelte';
 
 	export let pomodoroType: PomodoroType;
 	export let timer: string;
@@ -30,9 +30,12 @@
 			.with('long-break', () => 'Long Break')
 			.exhaustive()}
 	</h1>
-	<h2 class="font-bold text-8xl md:text-9xl tracking-wide select-none cursor-default">{timer}</h2>
+	<h2 class="font-bold font-rounded text-8xl md:text-9xl tracking-wide select-none cursor-default">
+		{timer}
+	</h2>
 
 	<div class="relative flex">
+		<SettingButton />
 		<ToggleButton {buttonState} {handleClick} {pomodoroType} />
 		{#if buttonState === 'playing'}
 			<SkipButton {nextStep} />

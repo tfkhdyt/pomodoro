@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { match } from 'ts-pattern';
-	import type { PomodoroType } from '../../types';
+	import type { PomodoroType } from '@/types';
 
 	export let resetReps: () => Promise<void>;
 	export let reps: number;

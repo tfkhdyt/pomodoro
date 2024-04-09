@@ -9,11 +9,11 @@
 	import clsx from 'clsx';
 	import { confirm } from '@tauri-apps/api/dialog';
 	import type { KeyboardEventHandler } from 'svelte/elements';
-	import ProgressBar from './components/ProgressBar.svelte';
-	import Card from './components/Card.svelte';
 	import { onDestroy } from 'svelte';
-	import Count from './components/Count.svelte';
-	import type { ButtonState, PomodoroType } from '../types';
+	import type { ButtonState, PomodoroType } from '@/types';
+	import Card from '@/components/Card.svelte';
+	import Count from '@/components/Count.svelte';
+	import Progress from '@/components/ui/progress/progress.svelte';
 
 	const time = {
 		pomodoro: 25,
@@ -163,7 +163,17 @@
 			.exhaustive()
 	)}
 >
-	<ProgressBar {pomodoroType} {progress} />
+	<Progress
+		value={progress}
+		class={clsx(
+			'w-[450px] md:w-[500px] mx-auto mb-4 h-2 dark',
+			match(pomodoroType)
+				.with('pomodoro', () => 'bg-[#c15c5c]')
+				.with('short-break', () => 'bg-[#4c9196]')
+				.with('long-break', () => 'bg-[#4d7fa2]')
+				.exhaustive()
+		)}
+	/>
 	<Card {buttonState} {handleClick} {nextStep} {timer} {pomodoroType} />
 	<Count {pomodoroType} {reps} {resetReps} />
 </main>

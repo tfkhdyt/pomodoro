@@ -1,7 +1,7 @@
 <script lang="ts">
 	import clsx from 'clsx';
 	import { match } from 'ts-pattern';
-	import type { PomodoroType } from '../../types';
+	import type { PomodoroType } from '@/types';
 
 	export let pomodoroType: PomodoroType;
 	export let progress: number;

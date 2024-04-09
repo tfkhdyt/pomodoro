@@ -1,6 +1,6 @@
 <script lang="ts">
 	import clsx from 'clsx';
-	import type { ButtonState, PomodoroType } from '../../../types';
+	import type { ButtonState, PomodoroType } from '@/types';
 	import { match } from 'ts-pattern';
 
 	export let handleClick: () => void;
