@@ -1,12 +1,12 @@
 [package]
-name = "app"
-version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
-default-run = "app"
-edition = "2021"
+name         = "pomodoro"
+version      = "0.2.0"
+description  = "Minimalistic Pomodoro App"
+authors      = ["tfkhdyt"]
+license      = ""
+repository   = ""
+default-run  = "pomodoro"
+edition      = "2021"
 rust-version = "1.60"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -17,7 +17,13 @@ tauri-build = { version = "1.5.1", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.6.1", features = [ "fs-create-dir", "fs-write-file", "fs-read-file", "fs-read-dir", "fs-exists", "path-all",
+tauri = { version = "1.6.1", features = [
+  "fs-create-dir",
+  "fs-write-file",
+  "fs-read-file",
+  "fs-read-dir",
+  "fs-exists",
+  "path-all",
   "dialog-confirm",
   "window-set-title",
   "notification-all",
@@ -28,3 +34,10 @@ tauri = { version = "1.6.1", features = [ "fs-create-dir", "fs-write-file", "fs-
 # If you use cargo directly instead of tauri's cli you can use this feature flag to switch between tauri's `dev` and `build` modes.
 # DO NOT REMOVE!!
 custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+strip         = true
+opt-level     = "z"
+lto           = true
+codegen-units = 1
+panic         = "abort"

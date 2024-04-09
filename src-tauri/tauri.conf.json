@@ -59,7 +59,7 @@
 			},
 			"resources": [],
 			"shortDescription": "",
-			"targets": ["deb"],
+			"targets": ["appimage", "deb"],
 			"windows": {
 				"certificateThumbprint": null,
 				"digestAlgorithm": "sha256",
