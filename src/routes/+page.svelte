@@ -8,8 +8,12 @@
 	import { appWindow } from '@tauri-apps/api/window';
 	import clsx from 'clsx';
 	import { confirm } from '@tauri-apps/api/dialog';
-	import { fade } from 'svelte/transition';
 	import type { KeyboardEventHandler } from 'svelte/elements';
+	import ProgressBar from './components/ProgressBar.svelte';
+	import Card from './components/Card.svelte';
+	import { onDestroy } from 'svelte';
+	import Count from './components/Count.svelte';
+	import type { ButtonState, PomodoroType } from '../types';
 
 	const time = {
 		pomodoro: 25,
@@ -17,11 +21,11 @@
 		'long-break': 15
 	};
 
-	let type: 'pomodoro' | 'short-break' | 'long-break' = 'pomodoro';
-	let buttonState: 'playing' | 'paused' = 'paused';
+	let pomodoroType: PomodoroType = 'pomodoro';
+	let buttonState: ButtonState = 'paused';
 
 	let reps = 1;
-	$: targetMinutes = time[type];
+	$: targetMinutes = time[pomodoroType];
 	$: timeLeft = targetMinutes * 60;
 	$: timer = `${Math.floor(timeLeft / 60)
 		.toString()
@@ -40,7 +44,7 @@
 	}
 
 	$: (async () => {
-		switch (type) {
+		switch (pomodoroType) {
 			case 'pomodoro':
 				await appWindow.setTitle('Time to focus! — Pomodoro');
 				break;
@@ -79,16 +83,16 @@
 		}
 
 		pause();
-		if (type === 'pomodoro' && reps % 4 !== 0) {
+		if (pomodoroType === 'pomodoro' && reps % 4 !== 0) {
 			sendNotification({ title: 'Time to take a short break!' });
-			type = 'short-break';
-		} else if (type === 'pomodoro' && reps % 4 === 0) {
+			pomodoroType = 'short-break';
+		} else if (pomodoroType === 'pomodoro' && reps % 4 === 0) {
 			sendNotification({ title: 'Time to take a long break!' });
-			type = 'long-break';
+			pomodoroType = 'long-break';
 		} else {
 			reps++;
 			sendNotification({ title: 'Time to focus!' });
-			type = 'pomodoro';
+			pomodoroType = 'pomodoro';
 		}
 	}
 
@@ -112,7 +116,7 @@
 		if (confirmed) {
 			pause();
 			reps = 1;
-			type = 'pomodoro';
+			pomodoroType = 'pomodoro';
 			timeLeft = targetMinutes * 60;
 		}
 	}
@@ -143,6 +147,8 @@
 	const onKeyUp: KeyboardEventHandler<Window> = (e) => {
 		keysPressed[e.key] = undefined;
 	};
+
+	onDestroy(() => clearInterval(intervalId));
 </script>
 
 <svelte:window on:keydown|preventDefault={onKeyDown} on:keyup|preventDefault={onKeyUp} />
@@ -150,102 +156,14 @@
 <main
 	class={clsx(
 		'mx-auto flex min-h-[100svh] flex-col justify-center text-center text-white transition duration-500',
-		match(type)
+		match(pomodoroType)
 			.with('pomodoro', () => 'bg-[#BA4949]')
 			.with('short-break', () => 'bg-[#38858a]')
 			.with('long-break', () => 'bg-[#397097]')
 			.exhaustive()
 	)}
 >
-	<div class="mx-auto mb-4">
-		<div
-			class={clsx(
-				'w-[450px] md:w-[500px] rounded-full transition-all duration-500',
-				match(type)
-					.with('pomodoro', () => 'bg-[#c15c5c]')
-					.with('short-break', () => 'bg-[#4c9196]')
-					.with('long-break', () => 'bg-[#4d7fa2]')
-					.exhaustive()
-			)}
-		>
-			<div
-				class={clsx('p-0.5 rounded-full', progress > 0 ? 'bg-white' : 'bg-transparent')}
-				style="width: {progress}%"
-			></div>
-		</div>
-	</div>
-	<div
-		class={clsx(
-			'w-[450px] md:w-[500px] mx-auto py-8 md:py-10 rounded-xl space-y-4 md:space-y-6 transition duration-500',
-			match(type)
-				.with('pomodoro', () => 'bg-[#c15c5c]')
-				.with('short-break', () => 'bg-[#4c9196]')
-				.with('long-break', () => 'bg-[#4d7fa2]')
-				.exhaustive()
-		)}
-	>
-		<h1 class="mx-auto font-bold text-2xl md:text-3xl select-none cursor-default">
-			{match(type)
-				.with('pomodoro', () => 'Pomodoro')
-				.with('short-break', () => 'Short Break')
-				.with('long-break', () => 'Long Break')
-				.exhaustive()}
-		</h1>
-		<h2 class="font-bold text-8xl md:text-9xl tracking-wide select-none cursor-default">{timer}</h2>
-
-		<div class="relative flex">
-			<div class="w-48 md:w-56 mx-auto pt-3">
-				<div class="relative h-14 md:h-16 w-full bg-[#ebebeb] rounded-md">
-					<button
-						type="button"
-						on:click={handleClick}
-						class={clsx(
-							'w-full absolute flex h-full items-center justify-center gap-3 rounded-md border border-[#ebebeb] p-2 text-xl md:text-2xl transition-all duration-200 lg:cursor-pointer uppercase font-bold focus:outline-none',
-							buttonState === 'paused'
-								? 'left-0 -top-1.5 bg-slate-50'
-								: '-left-0 -top-0 bg-slate-100',
-							match(type)
-								.with('pomodoro', () => 'text-[#BA4949]')
-								.with('short-break', () => 'text-[#38858a]')
-								.with('long-break', () => 'text-[#397097]')
-								.exhaustive()
-						)}>{buttonState === 'paused' ? 'Start' : 'Pause'}</button
-					>
-				</div>
-			</div>
-			{#if buttonState === 'playing'}
-				<button
-					type="button"
-					on:click={nextStep}
-					class="absolute inset-y-0 right-14 mt-2 focus:outline-none"
-					transition:fade={{ duration: 200 }}
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="0 0 24 24"
-						fill="currentColor"
-						class="w-8 h-8 md:w-10 md:h-10"
-					>
-						<path
-							d="M5.055 7.06C3.805 6.347 2.25 7.25 2.25 8.69v8.122c0 1.44 1.555 2.343 2.805 1.628L12 14.471v2.34c0 1.44 1.555 2.343 2.805 1.628l7.108-4.061c1.26-.72 1.26-2.536 0-3.256l-7.108-4.061C13.555 6.346 12 7.249 12 8.689v2.34L5.055 7.061Z"
-						/>
-					</svg>
-				</button>
-			{/if}
-		</div>
-	</div>
-	<div class="md:text-lg mt-4">
-		<button
-			type="button"
-			on:click={resetReps}
-			class="text-gray-300 hover:text-white focus:outline-none"
-		>
-			#{reps}
-		</button>
-		<h3 class="font-medium select-none cursor-default">
-			{match(type)
-				.with('pomodoro', () => 'Time to focus!')
-				.otherwise(() => 'Time for a break!')}
-		</h3>
-	</div>
+	<ProgressBar {pomodoroType} {progress} />
+	<Card {buttonState} {handleClick} {nextStep} {timer} {pomodoroType} />
+	<Count {pomodoroType} {reps} {resetReps} />
 </main>
