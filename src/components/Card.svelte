@@ -1,11 +1,11 @@
 <script lang="ts">
-	import clsx from 'clsx';
 	import { match } from 'ts-pattern';
 	import { type PomodoroType, type ButtonState } from '@/types';
 	import ToggleButton from './buttons/ToggleButton.svelte';
 	import SkipButton from './buttons/SkipButton.svelte';
 	import SettingDialog from './SettingDialog.svelte';
 	import type { LayoutData } from '../routes/$types';
+	import { cn } from '@/utils';
 
 	export let data: LayoutData;
 
@@ -17,7 +17,7 @@
 </script>
 
 <div
-	class={clsx(
+	class={cn(
 		'w-[450px] md:w-[500px] mx-auto py-8 md:py-10 rounded-xl space-y-4 md:space-y-6 transition duration-500',
 		match(pomodoroType)
 			.with('pomodoro', () => 'bg-[#c15c5c]')

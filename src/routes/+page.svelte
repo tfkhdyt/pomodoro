@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { match } from 'ts-pattern';
+	import Card from '@/components/Card.svelte';
+	import Count from '@/components/Count.svelte';
+	import Progress from '@/components/ui/progress/progress.svelte';
+	import type { ButtonState, PomodoroType } from '@/types';
+	import { cn } from '@/utils';
+	import { confirm } from '@tauri-apps/api/dialog';
 	import {
 		isPermissionGranted,
 		requestPermission,
 		sendNotification
 	} from '@tauri-apps/api/notification';
 	import { appWindow } from '@tauri-apps/api/window';
-	import clsx from 'clsx';
-	import { confirm } from '@tauri-apps/api/dialog';
 	import { onDestroy } from 'svelte';
-	import type { ButtonState, PomodoroType } from '@/types';
-	import Card from '@/components/Card.svelte';
-	import Count from '@/components/Count.svelte';
-	import Progress from '@/components/ui/progress/progress.svelte';
+	import { match } from 'ts-pattern';
 	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
@@ -144,7 +144,7 @@
 </script>
 
 <main
-	class={clsx(
+	class={cn(
 		'mx-auto flex min-h-[100svh] flex-col justify-center text-center text-white transition duration-500',
 		match(pomodoroType)
 			.with('pomodoro', () => 'bg-[#BA4949]')
@@ -155,7 +155,7 @@
 >
 	<Progress
 		value={progress}
-		class={clsx(
+		class={cn(
 			'w-[450px] md:w-[500px] mx-auto mb-4 h-2 dark',
 			match(pomodoroType)
 				.with('pomodoro', () => 'bg-[#c15c5c]')

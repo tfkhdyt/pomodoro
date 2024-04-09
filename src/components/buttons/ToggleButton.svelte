@@ -1,6 +1,6 @@
 <script lang="ts">
-	import clsx from 'clsx';
 	import type { ButtonState, PomodoroType } from '@/types';
+	import { cn } from '@/utils';
 	import { match } from 'ts-pattern';
 
 	export let handleClick: () => void;
@@ -13,7 +13,7 @@
 		<button
 			type="button"
 			on:click={handleClick}
-			class={clsx(
+			class={cn(
 				'w-full absolute flex h-full items-center justify-center gap-3 rounded-md border border-[#ebebeb] p-2 text-xl md:text-2xl transition-all duration-200 lg:cursor-pointer uppercase font-bold focus:outline-none',
 				buttonState === 'paused' ? 'left-0 -top-1.5 bg-slate-50' : '-left-0 -top-0 bg-slate-100',
 				match(pomodoroType)
