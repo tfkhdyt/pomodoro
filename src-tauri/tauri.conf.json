@@ -8,7 +8,7 @@
 	},
 	"package": {
 		"productName": "pomodoro",
-		"version": "0.1.0"
+		"version": "0.3.0"
 	},
 	"tauri": {
 		"allowlist": {
@@ -25,7 +25,12 @@
 				"all": true
 			},
 			"fs": {
-				"scope": ["$CONFIG/**/*", "$APPCONFIG/*"],
+				"scope": [
+					"$CONFIG/**/*",
+					"$APPCONFIG/*",
+					"$RESOURCE/audio/button-press.wav",
+					"$RESOURCE/audio/alarm-kitchen.mp3"
+				],
 				"readFile": true,
 				"writeFile": true,
 				"readDir": true,
@@ -57,9 +62,9 @@
 				"providerShortName": null,
 				"signingIdentity": null
 			},
-			"resources": [],
+			"resources": ["./audio/button-press.wav", "./audio/alarm-kitchen.mp3"],
 			"shortDescription": "",
-			"targets": ["appimage", "deb"],
+			"targets": ["deb"],
 			"windows": {
 				"certificateThumbprint": null,
 				"digestAlgorithm": "sha256",

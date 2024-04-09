@@ -74,10 +74,10 @@
 					<p class="font-semibold text-slate-700">Time (minutes)</p>
 					<div class="grid grid-cols-3 gap-6">
 						<div>
-							<Label for="podomoro" class="font-medium text-slate-700">Podomoro</Label>
+							<Label for="pomodoro" class="font-medium text-slate-700">Pomodoro</Label>
 							<Input
 								type="text"
-								id="podomoro"
+								id="pomodoro"
 								placeholder="25"
 								bind:value={data.config.timer.time.pomodoro}
 							/>

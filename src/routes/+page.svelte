@@ -10,6 +10,7 @@
 		requestPermission,
 		sendNotification
 	} from '@tauri-apps/api/notification';
+	import { invoke } from '@tauri-apps/api/tauri';
 	import { appWindow } from '@tauri-apps/api/window';
 	import { onDestroy } from 'svelte';
 	import { match } from 'ts-pattern';
@@ -62,7 +63,7 @@
 		permissionGranted = permission === 'granted';
 	}
 
-	function updateTimer() {
+	async function updateTimer() {
 		timeLeft--;
 		const minutes = Math.floor(timeLeft / 60);
 		const seconds = timeLeft % 60;
@@ -73,7 +74,8 @@
 		timer = `${formattedMinutes}:${formattedSeconds}`;
 
 		if (timeLeft < 0) {
-			nextStep();
+			await nextStep();
+			await invoke('play_transition_audio');
 		}
 	}
 
@@ -85,15 +87,20 @@
 		}
 
 		pause();
+
 		if (pomodoroType === 'pomodoro' && reps % longBreakInterval !== 0) {
 			sendNotification({ title: 'Time to take a short break!' });
 			pomodoroType = 'short-break';
+			timeLeft = targetMinutes * 60;
+
 			if (data.config.timer.autoStart.breaks) {
 				startInterval();
 			}
 		} else if (pomodoroType === 'pomodoro' && reps % longBreakInterval === 0) {
 			sendNotification({ title: 'Time to take a long break!' });
 			pomodoroType = 'long-break';
+			timeLeft = targetMinutes * 60;
+
 			if (data.config.timer.autoStart.breaks) {
 				startInterval();
 			}
@@ -101,6 +108,8 @@
 			reps++;
 			sendNotification({ title: 'Time to focus!' });
 			pomodoroType = 'pomodoro';
+			timeLeft = targetMinutes * 60;
+
 			if (data.config.timer.autoStart.pomodoros) {
 				startInterval();
 			}
@@ -132,12 +141,13 @@
 		}
 	}
 
-	function handleClick() {
+	async function handleClick() {
 		if (buttonState === 'paused') {
 			startInterval();
 		} else {
 			pause();
 		}
+		await invoke('play_button_press');
 	}
 
 	onDestroy(() => clearInterval(intervalId));
