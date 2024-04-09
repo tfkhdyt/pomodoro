@@ -11,6 +11,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { sendNotification } from '@tauri-apps/api/notification';
 	import type { Config } from '@/types';
+	import { RotateCcwIcon, SaveIcon } from 'lucide-svelte';
 
 	export let data: LayoutData;
 
@@ -128,8 +129,14 @@
 			</div>
 		</div>
 		<Dialog.Footer class="mt-4">
-			<Button type="button" variant="destructive" on:click={restoreDefault}>Restore Default</Button>
-			<Button type="button" on:click={saveConfig}>Save changes</Button>
+			<Button type="button" variant="destructive" on:click={restoreDefault}>
+				<RotateCcwIcon class="h-4 w-4 mr-2" />
+				Restore Default</Button
+			>
+			<Button type="button" on:click={saveConfig}>
+				<SaveIcon class="h-4 w-4 mr-2" />
+				Save changes</Button
+			>
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>

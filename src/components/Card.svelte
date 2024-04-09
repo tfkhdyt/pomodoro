@@ -33,7 +33,9 @@
 			.with('long-break', () => 'Long Break')
 			.exhaustive()}
 	</h1>
-	<h2 class="font-bold font-rounded text-8xl md:text-9xl tracking-wide select-none cursor-default">
+	<h2
+		class="font-bold font-rounded text-8xl md:text-9xl tracking-wide select-none cursor-default text-center mx-auto"
+	>
 		{timer}
 	</h2>
 

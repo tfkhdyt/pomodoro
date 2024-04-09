@@ -88,22 +88,22 @@
 		if (pomodoroType === 'pomodoro' && reps % longBreakInterval !== 0) {
 			sendNotification({ title: 'Time to take a short break!' });
 			pomodoroType = 'short-break';
-			// if (data.config.timer.autoStart.breaks) {
-			// 	startInterval();
-			// }
+			if (data.config.timer.autoStart.breaks) {
+				startInterval();
+			}
 		} else if (pomodoroType === 'pomodoro' && reps % longBreakInterval === 0) {
 			sendNotification({ title: 'Time to take a long break!' });
 			pomodoroType = 'long-break';
-			// if (data.config.timer.autoStart.breaks) {
-			// 	startInterval();
-			// }
+			if (data.config.timer.autoStart.breaks) {
+				startInterval();
+			}
 		} else {
 			reps++;
 			sendNotification({ title: 'Time to focus!' });
 			pomodoroType = 'pomodoro';
-			// if (data.config.timer.autoStart.pomodoros) {
-			// 	startInterval();
-			// }
+			if (data.config.timer.autoStart.pomodoros) {
+				startInterval();
+			}
 		}
 	}
 
