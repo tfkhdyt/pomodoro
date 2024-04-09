@@ -24,6 +24,7 @@
 	$: timer = `${Math.floor(timeLeft / 60)
 		.toString()
 		.padStart(2, '0')}:${(timeLeft % 60).toString().padStart(2, '0')}`;
+	$: progress = 100 - (timeLeft / 60 / targetMinutes) * 100;
 
 	let intervalId: number;
 
@@ -107,6 +108,7 @@
 		if (confirmed) {
 			reps = 1;
 			type = 'pomodoro';
+			timeLeft = targetMinutes * 60;
 			buttonState = 'paused';
 		}
 	}
@@ -122,6 +124,31 @@
 			.exhaustive()
 	)}
 >
+	<div class="mx-auto mb-4">
+		<div
+			class={clsx(
+				'w-[500px] rounded-full',
+				match(type)
+					.with('pomodoro', () => 'bg-[#c15c5c]')
+					.with('short-break', () => 'bg-[#4c9196]')
+					.with('long-break', () => 'bg-[#4d7fa2]')
+					.exhaustive()
+			)}
+		>
+			<div
+				class={clsx(
+					'text-xs font-medium text-center p-0.5 leading-none rounded-full transition-all ease-linear',
+					progress > 0 ? 'bg-white' : 'bg-transparent',
+					match(type)
+						.with('pomodoro', () => 'text-[#BA4949]')
+						.with('short-break', () => 'text-[#38858a]')
+						.with('long-break', () => 'text-[#397097]')
+						.exhaustive()
+				)}
+				style="width: {progress}%"
+			></div>
+		</div>
+	</div>
 	<div
 		class={clsx(
 			'w-[500px] mx-auto py-10 rounded-xl space-y-6 transition duration-500',
