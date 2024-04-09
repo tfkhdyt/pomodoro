@@ -9,6 +9,7 @@
 	import clsx from 'clsx';
 	import { confirm } from '@tauri-apps/api/dialog';
 	import { fade } from 'svelte/transition';
+	import type { KeyboardEventHandler } from 'svelte/elements';
 
 	const time = {
 		pomodoro: 25,
@@ -115,7 +116,36 @@
 			timeLeft = targetMinutes * 60;
 		}
 	}
+
+	function handleClick() {
+		if (buttonState === 'paused') {
+			startInterval();
+		} else {
+			pause();
+		}
+	}
+
+	let keysPressed: Record<string, boolean | undefined> = {};
+	const onKeyDown: KeyboardEventHandler<Window> = (e) => {
+		keysPressed[e.key] = true;
+
+		if (keysPressed['Control'] && e.code === 'Space' && buttonState === 'playing') {
+			return nextStep();
+		}
+		if (e.code === 'Space') {
+			return handleClick();
+		}
+		if (e.code === 'Backspace') {
+			return resetReps();
+		}
+	};
+
+	const onKeyUp: KeyboardEventHandler<Window> = (e) => {
+		keysPressed[e.key] = undefined;
+	};
 </script>
+
+<svelte:window on:keydown|preventDefault={onKeyDown} on:keyup|preventDefault={onKeyUp} />
 
 <main
 	class={clsx(
@@ -130,7 +160,7 @@
 	<div class="mx-auto mb-4">
 		<div
 			class={clsx(
-				'w-[450px] md:w-[500px] rounded-full',
+				'w-[450px] md:w-[500px] rounded-full transition-all duration-500',
 				match(type)
 					.with('pomodoro', () => 'bg-[#c15c5c]')
 					.with('short-break', () => 'bg-[#4c9196]')
@@ -139,15 +169,7 @@
 			)}
 		>
 			<div
-				class={clsx(
-					'text-xs font-medium text-center p-0.5 leading-none rounded-full transition-all ease-linear',
-					progress > 0 ? 'bg-white' : 'bg-transparent',
-					match(type)
-						.with('pomodoro', () => 'text-[#BA4949]')
-						.with('short-break', () => 'text-[#38858a]')
-						.with('long-break', () => 'text-[#397097]')
-						.exhaustive()
-				)}
+				class={clsx('p-0.5 rounded-full', progress > 0 ? 'bg-white' : 'bg-transparent')}
 				style="width: {progress}%"
 			></div>
 		</div>
@@ -176,7 +198,7 @@
 				<div class="relative h-14 md:h-16 w-full bg-[#ebebeb] rounded-md">
 					<button
 						type="button"
-						on:click={buttonState === 'paused' ? startInterval : pause}
+						on:click={handleClick}
 						class={clsx(
 							'w-full absolute flex h-full items-center justify-center gap-3 rounded-md border border-[#ebebeb] p-2 text-xl md:text-2xl transition-all duration-200 lg:cursor-pointer uppercase font-bold focus:outline-none',
 							buttonState === 'paused'
