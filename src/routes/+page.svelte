@@ -71,6 +71,8 @@
 	}
 
 	async function nextStep() {
+		clearInterval(intervalId);
+
 		if (!permissionGranted) {
 			await askNotifPermission();
 		}
@@ -176,7 +178,7 @@
 						type="button"
 						on:click={buttonState === 'paused' ? startInterval : pause}
 						class={clsx(
-							'w-full absolute flex h-full items-center justify-center gap-3 rounded-md border border-[#ebebeb] p-2 text-xl md:text-2xl transition-all duration-200 lg:cursor-pointer uppercase font-bold',
+							'w-full absolute flex h-full items-center justify-center gap-3 rounded-md border border-[#ebebeb] p-2 text-xl md:text-2xl transition-all duration-200 lg:cursor-pointer uppercase font-bold focus:outline-none',
 							buttonState === 'paused'
 								? 'left-0 -top-1.5 bg-slate-50'
 								: '-left-0 -top-0 bg-slate-100',
@@ -193,7 +195,7 @@
 				<button
 					type="button"
 					on:click={nextStep}
-					class="absolute inset-y-0 right-14 mt-2"
+					class="absolute inset-y-0 right-14 mt-2 focus:outline-none"
 					transition:fade={{ duration: 200 }}
 				>
 					<svg
@@ -211,7 +213,11 @@
 		</div>
 	</div>
 	<div class="md:text-lg mt-4">
-		<button type="button" on:click={resetReps} class="text-gray-300 hover:text-white">
+		<button
+			type="button"
+			on:click={resetReps}
+			class="text-gray-300 hover:text-white focus:outline-none"
+		>
 			#{reps}
 		</button>
 		<h3 class="font-medium select-none cursor-default">
