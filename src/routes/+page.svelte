@@ -166,9 +166,9 @@
 				.with('long-break', () => 'Long Break')
 				.exhaustive()}
 		</h1>
-		<h2 class="font-bold text-9xl font-mono">{timer}</h2>
+		<h2 class="font-bold text-9xl">{timer}</h2>
 
-		<div class="w-56 mx-auto">
+		<div class="w-56 mx-auto pt-3">
 			<div class="relative h-16 w-full bg-[#ebebeb] rounded-md">
 				<button
 					type="button"
