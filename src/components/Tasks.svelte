@@ -68,6 +68,25 @@
 		addNote = false;
 		note = null;
 	}
+
+	async function toggleMark(id: number) {
+		data.appData.tasks = data.appData.tasks.map((it) => {
+			if (it.id === id) {
+				it.done = !it.done;
+			}
+			return it;
+		});
+
+		const index = data.appData.tasks.findIndex((task) => task.id === id);
+
+		if (index !== -1 && data.appData.tasks[index].done) {
+			// Update tasks array directly (assuming prop is writable)
+			const [movedTask] = data.appData.tasks.splice(index, 1);
+			data.appData.tasks = [...data.appData.tasks.filter((it) => it.id !== id), movedTask];
+		}
+
+		await save();
+	}
 </script>
 
 <section class="w-[450px] md:w-[500px] mx-auto text-left">
@@ -106,15 +125,7 @@
 						<div class="flex items-center decoration-4">
 							<button
 								class="focus:outline-none"
-								on:click|stopPropagation={async () => {
-									data.appData.tasks = data.appData.tasks.map((it) => {
-										if (it.id === item.id) {
-											it.done = !it.done;
-										}
-										return it;
-									});
-									await save();
-								}}
+								on:click|stopPropagation={async () => await toggleMark(item.id)}
 							>
 								<CircleCheckIcon
 									class="w-10 h-10 mr-2 hover:opacity-75"
