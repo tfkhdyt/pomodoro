@@ -87,6 +87,11 @@
 
 		await save();
 	}
+
+	async function setActiveTask(id: number) {
+		data.appData.activeTask = id;
+		await save();
+	}
 </script>
 
 <section class="w-[450px] md:w-[500px] mx-auto text-left">
@@ -116,10 +121,7 @@
 							? 'border-l-black'
 							: 'border-l-transparent hover:border-l-slate-300'
 					)}
-					on:click={async () => {
-						data.appData.activeTask = item.id;
-						await save();
-					}}
+					on:click={async () => await setActiveTask(item.id)}
 				>
 					<div class="flex justify-between items-center">
 						<div class="flex items-center decoration-4">
