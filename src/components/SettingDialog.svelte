@@ -10,24 +10,23 @@
 	import type { LayoutData } from '../routes/$types';
 	import { invalidateAll } from '$app/navigation';
 	import { sendNotification } from '@tauri-apps/api/notification';
-	import type { Config } from '@/types';
 	import { RotateCcwIcon, SaveIcon } from 'lucide-svelte';
 
 	export let data: LayoutData;
 
 	async function saveConfig() {
-		const newConfig: Config = {
-			timer: {
-				time: {
-					pomodoro: Number(data.config.timer.time.pomodoro),
-					shortBreak: Number(data.config.timer.time.shortBreak),
-					longBreak: Number(data.config.timer.time.longBreak)
-				},
-				longBreakInterval: Number(data.config.timer.longBreakInterval),
-				autoStart: data.config.timer.autoStart
-			}
-		};
-		await writeTextFile('config.json', JSON.stringify(newConfig, null, 2), {
+		// const newConfig: Config = {
+		// 	timer: {
+		// 		time: {
+		// 			pomodoro: Number(data.config.timer.time.pomodoro),
+		// 			shortBreak: Number(data.config.timer.time.shortBreak),
+		// 			longBreak: Number(data.config.timer.time.longBreak)
+		// 		},
+		// 		longBreakInterval: Number(data.config.timer.longBreakInterval),
+		// 		autoStart: data.config.timer.autoStart
+		// 	}
+		// };
+		await writeTextFile('config.json', JSON.stringify(data.config, null, 2), {
 			dir: BaseDirectory.AppConfig
 		});
 
@@ -76,7 +75,7 @@
 						<div>
 							<Label for="pomodoro" class="font-medium text-slate-700">Pomodoro</Label>
 							<Input
-								type="text"
+								type="number"
 								id="pomodoro"
 								placeholder="25"
 								bind:value={data.config.timer.time.pomodoro}
