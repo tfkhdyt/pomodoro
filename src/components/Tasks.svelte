@@ -108,8 +108,8 @@
 	}
 </script>
 
-<section class="w-[450px] md:w-[500px] mx-auto text-left">
-	<h3 class="font-bold text-lg py-4 border-b border-b-white/75 mb-4 select-none cursor-default">
+<section class="w-[450px] md:w-[500px] mx-auto text-left space-y-4">
+	<h3 class="font-bold text-lg py-4 border-b border-b-white/75 select-none cursor-default">
 		Tasks
 	</h3>
 	{#if data.appData.tasks.length > 0}
@@ -194,7 +194,7 @@
 		<Dialog.Trigger class="w-full focus:outline-none">
 			<button
 				class={cn(
-					'w-full bg-black/10 rounded-md p-5 text-white/55 hover:text-white/70 font-bold focus:outline-none border-white/55 hover:border-white/70 border-2 border-dashed mt-3'
+					'w-full bg-black/10 rounded-md p-5 text-white/55 hover:text-white/70 font-bold focus:outline-none border-white/55 hover:border-white/70 border-2 border-dashed'
 				)}
 			>
 				Add Task
