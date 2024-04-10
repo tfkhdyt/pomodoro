@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { cn } from '@/utils';
-	import { CircleCheckIcon, SaveIcon } from 'lucide-svelte';
+	import { CircleCheckIcon, PencilIcon, SaveIcon, Trash2Icon } from 'lucide-svelte';
 	import { dndzone, type DndEvent } from 'svelte-dnd-action';
-	import { flip } from 'svelte/animate';
 	import { match } from 'ts-pattern';
 	import * as Dialog from '@/components/ui/dialog';
 	import { Input } from './ui/input';
@@ -15,6 +14,8 @@
 	import { sendNotification } from '@tauri-apps/api/notification';
 	import type { Task } from '@/types';
 	import * as Alert from './ui/alert';
+	import * as ContextMenu from '@/components/ui/context-menu';
+	import { confirm } from '@tauri-apps/api/dialog';
 
 	export let data: LayoutData;
 
@@ -92,6 +93,19 @@
 		data.appData.activeTask = id;
 		await save();
 	}
+
+	async function deleteTask(id: number) {
+		const item = data.appData.tasks.find((it) => it.id === id);
+
+		if (item) {
+			const confirmed = await confirm(`Are you sure you want to delete this item? (${item.title})`);
+
+			if (confirmed) {
+				data.appData.tasks = data.appData.tasks.filter((it) => it.id !== id);
+				await save();
+			}
+		}
+	}
 </script>
 
 <section class="w-[450px] md:w-[500px] mx-auto text-left">
@@ -112,51 +126,66 @@
 			on:finalize={handleDndFinalize}
 			class="space-y-2 overflow-scroll"
 		>
-			{#each data.appData.tasks as item (item.id)}
-				<button
-					animate:flip={{ duration: flipDurationMs }}
-					class={cn(
-						'w-full bg-white rounded-md py-3 pl-3 pr-5 text-slate-700 font-semibold border-l-[6px] focus:outline-none space-y-2',
-						item.id === data.appData.activeTask
-							? 'border-l-black'
-							: 'border-l-transparent hover:border-l-slate-300'
-					)}
-					on:click={async () => await setActiveTask(item.id)}
-				>
-					<div class="flex justify-between items-center">
-						<div class="flex items-center decoration-4">
-							<button
-								class="focus:outline-none"
-								on:click|stopPropagation={async () => await toggleMark(item.id)}
-							>
-								<CircleCheckIcon
-									class="w-10 h-10 mr-2 hover:opacity-75"
-									fill={match(item.done)
-										.with(false, () => '#dfdfdf')
-										.with(true, () => '#BA4949')
-										.exhaustive()}
-									color="white"
-								/>
-							</button>
-							<span class={cn(item.done && 'line-through opacity-50')}>
-								{item.title}
-							</span>
-						</div>
-						<div class="flex space-x-0.5 text-slate-400 items-baseline text-sm">
-							<span class="text-xl font-semibold">{item.act}</span>
-							<span>/</span>
-							<span class="text-sm">{item.est}</span>
-						</div>
-					</div>
+			<!-- animate:flip={{ duration: flipDurationMs }} -->
 
-					{#if item.note}
-						<Alert.Root class="block">
-							<Alert.Description class="font-medium">
-								{item.note}
-							</Alert.Description>
-						</Alert.Root>
-					{/if}
-				</button>
+			{#each data.appData.tasks as item (item.id)}
+				<ContextMenu.Root>
+					<ContextMenu.Trigger
+						><button
+							class={cn(
+								'w-full bg-white rounded-md py-3 pl-3 pr-5 text-slate-700 font-semibold border-l-[6px] focus:outline-none space-y-2',
+								item.id === data.appData.activeTask
+									? 'border-l-black'
+									: 'border-l-transparent hover:border-l-slate-300'
+							)}
+							on:click={async () => await setActiveTask(item.id)}
+						>
+							<div class="flex justify-between items-center">
+								<div class="flex items-center decoration-4">
+									<button
+										class="focus:outline-none"
+										on:click|stopPropagation={async () => await toggleMark(item.id)}
+									>
+										<CircleCheckIcon
+											class="w-10 h-10 mr-2 hover:opacity-75"
+											fill={match(item.done)
+												.with(false, () => '#dfdfdf')
+												.with(true, () => '#BA4949')
+												.exhaustive()}
+											color="white"
+										/>
+									</button>
+									<span class={cn(item.done && 'line-through opacity-50')}>
+										{item.title}
+									</span>
+								</div>
+								<div class="flex space-x-0.5 text-slate-400 items-baseline text-sm">
+									<span class="text-xl font-semibold">{item.act}</span>
+									<span>/</span>
+									<span class="text-sm">{item.est}</span>
+								</div>
+							</div>
+
+							{#if item.note}
+								<Alert.Root class="block">
+									<Alert.Description class="font-medium">
+										{item.note}
+									</Alert.Description>
+								</Alert.Root>
+							{/if}
+						</button></ContextMenu.Trigger
+					>
+					<ContextMenu.Content>
+						<ContextMenu.Item>
+							<PencilIcon class="w-4 h-4 mr-2" />
+							Update</ContextMenu.Item
+						>
+						<ContextMenu.Item on:click={async () => await deleteTask(item.id)}>
+							<Trash2Icon class="w-4 h-4 mr-2" />
+							Delete</ContextMenu.Item
+						>
+					</ContextMenu.Content>
+				</ContextMenu.Root>
 			{/each}
 		</div>
 	{/if}

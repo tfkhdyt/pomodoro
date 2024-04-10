@@ -156,12 +156,13 @@
 
 <main
 	class={cn(
-		'mx-auto flex min-h-[100svh] flex-col justify-center text-center text-white transition duration-500',
+		'mx-auto flex min-h-[100svh] py-4 flex-col text-center text-white transition duration-500',
 		match(pomodoroType)
 			.with('pomodoro', () => 'bg-[#BA4949]')
 			.with('short-break', () => 'bg-[#38858a]')
 			.with('long-break', () => 'bg-[#397097]')
-			.exhaustive()
+			.exhaustive(),
+		data.appData.tasks.length === 0 && 'justify-center'
 	)}
 >
 	<Progress
