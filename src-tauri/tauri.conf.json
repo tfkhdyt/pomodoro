@@ -28,6 +28,8 @@
 				"scope": [
 					"$CONFIG/**/*",
 					"$APPCONFIG/*",
+					"$DATA/**/*",
+					"$APPDATA/*",
 					"$RESOURCE/audio/button-press.wav",
 					"$RESOURCE/audio/alarm-kitchen.mp3"
 				],

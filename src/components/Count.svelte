@@ -1,10 +1,14 @@
 <script lang="ts">
 	import { match } from 'ts-pattern';
 	import type { PomodoroType } from '@/types';
+	import type { LayoutData } from '../routes/$types';
 
+	export let data: LayoutData;
 	export let resetReps: () => Promise<void>;
 	export let reps: number;
 	export let pomodoroType: PomodoroType;
+
+	$: currentTaskTitle = data.appData.tasks.find((it) => it.id === data.appData.activeTask)?.title;
 </script>
 
 <div class="md:text-lg mt-4">
@@ -16,8 +20,9 @@
 		#{reps}
 	</button>
 	<h3 class="font-medium select-none cursor-default">
-		{match(pomodoroType)
-			.with('pomodoro', () => 'Time to focus!')
-			.otherwise(() => 'Time for a break!')}
+		{currentTaskTitle ??
+			match(pomodoroType)
+				.with('pomodoro', () => 'Time to focus!')
+				.otherwise(() => 'Time for a break!')}
 	</h3>
 </div>

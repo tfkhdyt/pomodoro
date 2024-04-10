@@ -15,3 +15,17 @@ export type Config = {
 		longBreakInterval: number;
 	};
 };
+
+export type Task = {
+	id: number;
+	title: string;
+	note: string | null;
+	done: boolean;
+	act: number;
+	est: number;
+};
+
+export type Data = {
+	activeTask: number | null;
+	tasks: Task[];
+};

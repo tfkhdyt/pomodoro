@@ -15,6 +15,7 @@
 	import { onDestroy } from 'svelte';
 	import { match } from 'ts-pattern';
 	import type { LayoutData } from './$types';
+	import Tasks from '@/components/Tasks.svelte';
 
 	export let data: LayoutData;
 
@@ -175,5 +176,6 @@
 		)}
 	/>
 	<Card {buttonState} {handleClick} {nextStep} {timer} {pomodoroType} {data} />
-	<Count {pomodoroType} {reps} {resetReps} />
+	<Count {data} {pomodoroType} {reps} {resetReps} />
+	<Tasks {data} />
 </main>

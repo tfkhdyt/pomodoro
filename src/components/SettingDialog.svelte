@@ -48,7 +48,7 @@
 	<Dialog.Trigger class="focus:outline-none"><SettingButton /></Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
-			<Dialog.Title class="text-lg">Settings</Dialog.Title>
+			<Dialog.Title>Settings</Dialog.Title>
 		</Dialog.Header>
 		<div class="space-y-4">
 			<h2 class="flex items-center font-medium text-slate-700">
@@ -78,6 +78,7 @@
 								type="number"
 								id="pomodoro"
 								placeholder="25"
+								required
 								bind:value={data.config.timer.time.pomodoro}
 							/>
 						</div>
@@ -87,6 +88,7 @@
 								type="number"
 								id="short-break"
 								placeholder="5"
+								required
 								bind:value={data.config.timer.time.shortBreak}
 							/>
 						</div>
@@ -96,6 +98,7 @@
 								type="number"
 								id="long-break"
 								placeholder="15"
+								required
 								bind:value={data.config.timer.time.longBreak}
 							/>
 						</div>
@@ -122,6 +125,7 @@
 						id="long-break-interval"
 						placeholder="4"
 						class="w-24"
+						required
 						bind:value={data.config.timer.longBreakInterval}
 					/>
 				</div>

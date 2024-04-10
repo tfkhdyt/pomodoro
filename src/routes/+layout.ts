@@ -3,7 +3,7 @@ export const ssr = false;
 
 import { BaseDirectory, createDir, exists, readTextFile, writeTextFile } from '@tauri-apps/api/fs';
 import type { LayoutLoad } from './$types';
-import type { Config } from '@/types';
+import type { Config, Data } from '@/types';
 import { defaultConfig } from '@/constants';
 
 export const load: LayoutLoad = async () => {
@@ -22,5 +22,31 @@ export const load: LayoutLoad = async () => {
 	const contents = await readTextFile('config.json', { dir: BaseDirectory.AppConfig });
 	const currentConfig = JSON.parse(contents) as Config;
 
-	return { config: currentConfig };
+	const isDataDirExists = await exists('', { dir: BaseDirectory.AppData });
+	if (!isDataDirExists) {
+		await createDir('', { dir: BaseDirectory.AppData });
+	}
+
+	const isDataFileExists = await exists('data.json', { dir: BaseDirectory.AppData });
+	if (!isDataFileExists) {
+		await writeTextFile(
+			'data.json',
+			JSON.stringify(
+				{
+					activeTask: null,
+					tasks: []
+				},
+				null,
+				2
+			),
+			{
+				dir: BaseDirectory.AppData
+			}
+		);
+	}
+
+	const data = await readTextFile('data.json', { dir: BaseDirectory.AppData });
+	const currentData = JSON.parse(data) as Data;
+
+	return { config: currentConfig, appData: currentData };
 };
