@@ -5,13 +5,48 @@
 	import { cn } from '@/utils';
 	import { CircleCheckIcon, PencilIcon, Trash2Icon } from 'lucide-svelte';
 	import { match } from 'ts-pattern';
+	import { sendNotification } from '@tauri-apps/api/notification';
 
 	export let item: Task;
 	export let appData: Data;
+	export let save: () => Promise<void>;
 
-	export let setActiveTask: (id: number) => void;
-	export let toggleMark: (id: number) => void;
-	export let deleteTask: (id: number) => void;
+	async function toggleMark(id: number) {
+		appData.tasks = appData.tasks.map((it) => {
+			if (it.id === id) {
+				it.done = !it.done;
+			}
+			return it;
+		});
+
+		const index = appData.tasks.findIndex((task) => task.id === id);
+
+		if (index !== -1 && appData.tasks[index].done) {
+			const [movedTask] = appData.tasks.splice(index, 1);
+			appData.tasks = [...appData.tasks.filter((it) => it.id !== id), movedTask];
+		}
+
+		await save();
+	}
+
+	async function setActiveTask(id: number) {
+		appData.activeTask = id;
+		await save();
+	}
+
+	async function deleteTask(id: number) {
+		const item = appData.tasks.find((it) => it.id === id);
+
+		if (item) {
+			const confirmed = confirm(`Are you sure you want to delete this task? (${item.title})`);
+
+			if (confirmed) {
+				appData.tasks = appData.tasks.filter((it) => it.id !== id);
+				await save();
+				sendNotification('Task has been deleted');
+			}
+		}
+	}
 </script>
 
 <ContextMenu.Root>
