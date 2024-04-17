@@ -3,7 +3,12 @@
 	import * as Alert from '@/components/ui/alert';
 	import type { Config, Data, Task } from '@/types';
 	import { cn } from '@/utils';
-	import { CircleCheckIcon, PencilIcon, Trash2Icon } from 'lucide-svelte';
+	import {
+		CircleCheckIcon,
+		PencilIcon,
+		RotateCcwIcon,
+		Trash2Icon
+	} from 'lucide-svelte';
 	import { match } from 'ts-pattern';
 	import { sendNotification } from '@tauri-apps/api/notification';
 	import { confirm } from '@tauri-apps/api/dialog';
@@ -59,6 +64,21 @@
 			}
 		}
 	}
+
+	async function resetActPomodoro(id: number) {
+		appData.tasks = appData.tasks.map((t) => {
+			if (t.id === id) {
+				return {
+					...t,
+					act: 0
+				};
+			}
+
+			return t;
+		});
+
+		await save();
+	}
 </script>
 
 <ContextMenu.Root>
@@ -108,6 +128,10 @@
 		<ContextMenu.Item on:click={async () => await editTask(item.id)}>
 			<PencilIcon class="w-4 h-4 mr-2" />
 			Update
+		</ContextMenu.Item>
+		<ContextMenu.Item on:click={async () => await resetActPomodoro(item.id)}>
+			<RotateCcwIcon class="w-4 h-4 mr-2" />
+			Reset Act Pomodoro
 		</ContextMenu.Item>
 		<ContextMenu.Item on:click={async () => await deleteTask(item.id)}>
 			<Trash2Icon class="w-4 h-4 mr-2" />
