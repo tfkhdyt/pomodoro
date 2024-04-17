@@ -3,6 +3,7 @@
 	import { dndzone, type DndEvent } from 'svelte-dnd-action';
 	import type { LayoutData } from '../../routes/$types';
 	import AddTask from './AddTask.svelte';
+	import ClearMenu from './ClearMenu.svelte';
 	import EditTask from './EditTask.svelte';
 	import TaskItem from './TaskItem.svelte';
 
@@ -21,10 +22,12 @@
 </script>
 
 <section class="w-[450px] md:w-[500px] mx-auto text-left space-y-4">
-	<h3
-		class="font-bold text-lg py-4 border-b border-b-white/75 select-none cursor-default">
+	<div
+		class="font-bold text-lg py-4 border-b border-b-white/75 select-none cursor-default flex items-center justify-between">
 		Tasks
-	</h3>
+		<ClearMenu bind:tasks={data.appData.tasks} {save} />
+	</div>
+	<AddTask {data} {save} />
 	{#if data.appData.tasks.length > 0}
 		<div
 			use:dndzone={{
@@ -50,7 +53,5 @@
 			{/each}
 		</div>
 	{/if}
-
-	<AddTask {data} {save} />
 </section>
 <EditTask appData={data.appData} {save} />
