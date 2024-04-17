@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as Dialog from '@/components/ui/dialog';
+	import * as Tooltip from '@/components/ui/tooltip';
 	import SettingButton from './buttons/SettingButton.svelte';
 	import { Input } from '@/components/ui/input';
 	import { Label } from '@/components/ui/label';
@@ -10,7 +11,13 @@
 	import type { LayoutData } from '../routes/$types';
 	import { invalidateAll } from '$app/navigation';
 	import { sendNotification } from '@tauri-apps/api/notification';
-	import { RotateCcwIcon, SaveIcon } from 'lucide-svelte';
+	import {
+		ClockIcon,
+		InfoIcon,
+		RotateCcwIcon,
+		SaveIcon,
+		SquareCheckBigIcon
+	} from 'lucide-svelte';
 
 	export let data: LayoutData;
 
@@ -52,18 +59,7 @@
 		</Dialog.Header>
 		<div class="space-y-4">
 			<h2 class="flex items-center font-medium text-slate-700">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke-width="1.5"
-					stroke="currentColor"
-					class="w-6 h-6 mr-2">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-				</svg>
+				<ClockIcon class="w-5 h-5 mr-2" />
 				Timer
 			</h2>
 			<div class="space-y-6">
@@ -136,6 +132,65 @@
 						class="w-24"
 						required
 						bind:value={data.config.timer.longBreakInterval} />
+				</div>
+			</div>
+		</div>
+		<div class="space-y-4 border-t-2 pt-6 mt-4">
+			<h2 class="flex items-center font-medium text-slate-700">
+				<SquareCheckBigIcon class="w-5 h-5 mr-2" />
+				Task
+			</h2>
+			<div class="space-y-6">
+				<div class="flex justify-between items-center">
+					<div class="flex items-center">
+						<Label
+							for="auto-check-tasks"
+							class="font-medium text-slate-700 w-full">Auto Check Tasks</Label>
+						<Tooltip.Root>
+							<Tooltip.Trigger>
+								<InfoIcon
+									class="ml-1 hover:opacity-75"
+									fill="#B2B2B2"
+									color="white" />
+							</Tooltip.Trigger>
+							<Tooltip.Content class="max-w-[300px]">
+								<p>
+									If you enable "Auto Check Tasks", the active task will be
+									automatically checked when the actual pomodoro count reaches
+									the estimated count.
+								</p>
+							</Tooltip.Content>
+						</Tooltip.Root>
+					</div>
+					<Switch
+						id="auto-check-tasks"
+						bind:checked={data.config.task.autoCheckTasks} />
+				</div>
+				<div class="flex justify-between items-center">
+					<div class="flex items-center">
+						<Label
+							for="auto-switch-tasks"
+							class="font-medium text-slate-700 w-full">
+							Auto Switch Tasks
+						</Label>
+						<Tooltip.Root>
+							<Tooltip.Trigger>
+								<InfoIcon
+									class="ml-1 hover:opacity-75"
+									fill="#B2B2B2"
+									color="white" />
+							</Tooltip.Trigger>
+							<Tooltip.Content class="max-w-[300px]">
+								<p>
+									If you enable "Auto Switch Tasks", the checked task will be
+									automatically moved to the bottom of the task list.
+								</p>
+							</Tooltip.Content>
+						</Tooltip.Root>
+					</div>
+					<Switch
+						id="auto-switch-tasks"
+						bind:checked={data.config.task.autoSwitchTasks} />
 				</div>
 			</div>
 		</div>

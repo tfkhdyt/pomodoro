@@ -12,5 +12,9 @@ export const defaultConfig: Config = {
 			pomodoros: false
 		},
 		longBreakInterval: 4
+	},
+	task: {
+		autoCheckTasks: false,
+		autoSwitchTasks: true
 	}
 };

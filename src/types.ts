@@ -14,6 +14,10 @@ export type Config = {
 		};
 		longBreakInterval: number;
 	};
+	task: {
+		autoCheckTasks: boolean;
+		autoSwitchTasks: boolean;
+	};
 };
 
 export type Task = {

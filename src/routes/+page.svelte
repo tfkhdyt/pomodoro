@@ -97,6 +97,26 @@
 		}
 	}
 
+	async function autoCheckTask() {
+		const task = data.appData.tasks.find(
+			(t) => t.id === data.appData.activeTask
+		);
+
+		if (data.config.task.autoCheckTasks && task && task.act >= task.est) {
+			data.appData.tasks = data.appData.tasks.map((t) => {
+				if (t.id === data.appData.activeTask) {
+					return {
+						...task,
+						done: true
+					};
+				}
+				return task;
+			});
+		}
+
+		await save();
+	}
+
 	async function nextStep() {
 		clearInterval(intervalId);
 
@@ -110,7 +130,9 @@
 			sendNotification({ title: 'Time to take a short break!' });
 			pomodoroType = 'short-break';
 			timeLeft = targetMinutes * 60;
+
 			await incrementActiveTaskAct();
+			await autoCheckTask();
 
 			if (data.config.timer.autoStart.breaks) {
 				startInterval();
@@ -119,7 +141,9 @@
 			sendNotification({ title: 'Time to take a long break!' });
 			pomodoroType = 'long-break';
 			timeLeft = targetMinutes * 60;
+
 			await incrementActiveTaskAct();
+			await autoCheckTask();
 
 			if (data.config.timer.autoStart.breaks) {
 				startInterval();
