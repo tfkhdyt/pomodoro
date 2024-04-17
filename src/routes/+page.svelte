@@ -16,6 +16,8 @@
 	import { match } from 'ts-pattern';
 	import type { LayoutData } from './$types';
 	import Tasks from '@/components/task/Tasks.svelte';
+	import { BaseDirectory, writeTextFile } from '@tauri-apps/api/fs';
+	import { invalidateAll } from '$app/navigation';
 
 	export let data: LayoutData;
 
@@ -80,6 +82,21 @@
 		}
 	}
 
+	async function incrementActiveTaskAct() {
+		if (data.appData.activeTask) {
+			data.appData.tasks = data.appData.tasks.map((task) => {
+				if (task.id === data.appData.activeTask) {
+					return {
+						...task,
+						act: task.act + 1
+					};
+				}
+				return task;
+			});
+			await save();
+		}
+	}
+
 	async function nextStep() {
 		clearInterval(intervalId);
 
@@ -93,6 +110,7 @@
 			sendNotification({ title: 'Time to take a short break!' });
 			pomodoroType = 'short-break';
 			timeLeft = targetMinutes * 60;
+			await incrementActiveTaskAct();
 
 			if (data.config.timer.autoStart.breaks) {
 				startInterval();
@@ -101,6 +119,7 @@
 			sendNotification({ title: 'Time to take a long break!' });
 			pomodoroType = 'long-break';
 			timeLeft = targetMinutes * 60;
+			await incrementActiveTaskAct();
 
 			if (data.config.timer.autoStart.breaks) {
 				startInterval();
@@ -154,6 +173,14 @@
 		await invoke('play_button_press');
 	}
 
+	async function save() {
+		await writeTextFile('data.json', JSON.stringify(data.appData, null, 2), {
+			dir: BaseDirectory.AppData
+		});
+
+		await invalidateAll();
+	}
+
 	onDestroy(() => clearInterval(intervalId));
 </script>
 
@@ -179,5 +206,5 @@
 		)} />
 	<Card {buttonState} {handleClick} {nextStep} {timer} {pomodoroType} {data} />
 	<Count {data} {pomodoroType} {reps} {resetReps} />
-	<Tasks {data} />
+	<Tasks {data} {save} />
 </main>

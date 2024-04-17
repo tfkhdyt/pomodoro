@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { invalidateAll } from '$app/navigation';
 	import type { Task } from '@/types';
-	import { BaseDirectory, writeTextFile } from '@tauri-apps/api/fs';
 	import { dndzone, type DndEvent } from 'svelte-dnd-action';
 	import type { LayoutData } from '../../routes/$types';
 	import AddTask from './AddTask.svelte';
-	import TaskItem from './TaskItem.svelte';
 	import EditTask from './EditTask.svelte';
+	import TaskItem from './TaskItem.svelte';
 
 	export let data: LayoutData;
+	export let save: () => Promise<void>;
 
 	const flipDurationMs = 200;
 	function handleDnsConsider(e: CustomEvent<DndEvent<Task>>) {
@@ -17,14 +16,6 @@
 	async function handleDndFinalize(e: CustomEvent<DndEvent<Task>>) {
 		data.appData.tasks = e.detail.items;
 		await save();
-	}
-
-	async function save() {
-		await writeTextFile('data.json', JSON.stringify(data.appData, null, 2), {
-			dir: BaseDirectory.AppData
-		});
-
-		await invalidateAll();
 	}
 </script>
 
