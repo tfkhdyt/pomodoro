@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as ContextMenu from '@/components/ui/context-menu';
 	import * as Alert from '@/components/ui/alert';
-	import type { Data, Task } from '@/types';
+	import type { Config, Data, Task } from '@/types';
 	import { cn } from '@/utils';
 	import { CircleCheckIcon, PencilIcon, Trash2Icon } from 'lucide-svelte';
 	import { match } from 'ts-pattern';
@@ -11,7 +11,9 @@
 
 	export let item: Task;
 	export let appData: Data;
+	export let config: Config;
 	export let save: () => Promise<void>;
+	export let switchTask: (id: number) => Promise<void>;
 
 	async function toggleMark(id: number) {
 		appData.tasks = appData.tasks.map((it) => {
@@ -21,14 +23,8 @@
 			return it;
 		});
 
-		const index = appData.tasks.findIndex((task) => task.id === id);
-
-		if (index !== -1 && appData.tasks[index].done) {
-			const [movedTask] = appData.tasks.splice(index, 1);
-			appData.tasks = [
-				...appData.tasks.filter((it) => it.id !== id),
-				movedTask
-			];
+		if (config.task.autoSwitchTasks) {
+			await switchTask(id);
 		}
 
 		await save();

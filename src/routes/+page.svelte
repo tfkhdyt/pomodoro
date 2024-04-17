@@ -98,23 +98,49 @@
 	}
 
 	async function autoCheckTask() {
-		const task = data.appData.tasks.find(
+		const activeTask = data.appData.tasks.find(
 			(t) => t.id === data.appData.activeTask
 		);
 
-		if (data.config.task.autoCheckTasks && task && task.act >= task.est) {
+		if (
+			data.config.task.autoCheckTasks &&
+			activeTask &&
+			activeTask.act >= activeTask.est
+		) {
 			data.appData.tasks = data.appData.tasks.map((t) => {
 				if (t.id === data.appData.activeTask) {
 					return {
-						...task,
+						...t,
 						done: true
 					};
 				}
-				return task;
+				return t;
 			});
-		}
 
-		await save();
+			await save();
+
+			if (data.config.task.autoSwitchTasks) {
+				await switchTask(activeTask.id);
+			}
+		}
+	}
+
+	async function switchTask(id: number) {
+		const task = data.appData.tasks.find((task) => task.id === id);
+
+		if (task && task.done) {
+			data.appData.tasks = [
+				...data.appData.tasks.filter((it) => it.id !== id),
+				task
+			];
+
+			const lastUndone = data.appData.tasks.findLast((it) => it.done === false);
+			if (lastUndone) {
+				data.appData.activeTask = lastUndone.id;
+			}
+
+			await save();
+		}
 	}
 
 	async function nextStep() {
@@ -230,5 +256,5 @@
 		)} />
 	<Card {buttonState} {handleClick} {nextStep} {timer} {pomodoroType} {data} />
 	<Count {data} {pomodoroType} {reps} {resetReps} />
-	<Tasks {data} {save} />
+	<Tasks {data} {save} {switchTask} />
 </main>

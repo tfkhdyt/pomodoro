@@ -8,6 +8,7 @@
 
 	export let data: LayoutData;
 	export let save: () => Promise<void>;
+	export let switchTask: (id: number) => Promise<void>;
 
 	const flipDurationMs = 200;
 	function handleDnsConsider(e: CustomEvent<DndEvent<Task>>) {
@@ -40,7 +41,12 @@
 			<!-- animate:flip={{ duration: flipDurationMs }} -->
 
 			{#each data.appData.tasks as item (item.id)}
-				<TaskItem appData={data.appData} {item} {save} />
+				<TaskItem
+					appData={data.appData}
+					{item}
+					{save}
+					{switchTask}
+					config={data.config} />
 			{/each}
 		</div>
 	{/if}
