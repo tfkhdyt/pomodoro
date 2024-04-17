@@ -6,6 +6,7 @@
 	import type { LayoutData } from '../../routes/$types';
 	import AddTask from './AddTask.svelte';
 	import TaskItem from './TaskItem.svelte';
+	import EditTask from './EditTask.svelte';
 
 	export let data: LayoutData;
 
@@ -28,7 +29,8 @@
 </script>
 
 <section class="w-[450px] md:w-[500px] mx-auto text-left space-y-4">
-	<h3 class="font-bold text-lg py-4 border-b border-b-white/75 select-none cursor-default">
+	<h3
+		class="font-bold text-lg py-4 border-b border-b-white/75 select-none cursor-default">
 		Tasks
 	</h3>
 	{#if data.appData.tasks.length > 0}
@@ -43,8 +45,7 @@
 			}}
 			on:consider={handleDnsConsider}
 			on:finalize={handleDndFinalize}
-			class="space-y-2 overflow-scroll"
-		>
+			class="space-y-2 overflow-scroll">
 			<!-- animate:flip={{ duration: flipDurationMs }} -->
 
 			{#each data.appData.tasks as item (item.id)}
@@ -55,3 +56,4 @@
 
 	<AddTask {data} {save} />
 </section>
+<EditTask appData={data.appData} {save} />

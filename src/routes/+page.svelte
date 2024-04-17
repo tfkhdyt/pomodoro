@@ -130,9 +130,12 @@
 	}
 
 	async function resetReps() {
-		const confirmed = await confirm('Do you want to reset the pomodoro count?', {
-			type: 'warning'
-		});
+		const confirmed = await confirm(
+			'Do you want to reset the pomodoro count?',
+			{
+				type: 'warning'
+			}
+		);
 
 		if (confirmed) {
 			pause();
@@ -163,8 +166,7 @@
 			.with('long-break', () => 'bg-[#397097]')
 			.exhaustive(),
 		data.appData.tasks.length === 0 && 'justify-center'
-	)}
->
+	)}>
 	<Progress
 		value={progress}
 		class={cn(
@@ -174,8 +176,7 @@
 				.with('short-break', () => 'bg-[#4c9196]')
 				.with('long-break', () => 'bg-[#4d7fa2]')
 				.exhaustive()
-		)}
-	/>
+		)} />
 	<Card {buttonState} {handleClick} {nextStep} {timer} {pomodoroType} {data} />
 	<Count {data} {pomodoroType} {reps} {resetReps} />
 	<Tasks {data} />
