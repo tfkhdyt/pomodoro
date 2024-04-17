@@ -58,13 +58,11 @@
 					viewBox="0 0 24 24"
 					stroke-width="1.5"
 					stroke="currentColor"
-					class="w-6 h-6 mr-2"
-				>
+					class="w-6 h-6 mr-2">
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"
-						d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-					/>
+						d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
 				</svg>
 				Timer
 			</h2>
@@ -73,73 +71,83 @@
 					<p class="font-semibold text-slate-700">Time (minutes)</p>
 					<div class="grid grid-cols-3 gap-6">
 						<div>
-							<Label for="pomodoro" class="font-medium text-slate-700">Pomodoro</Label>
+							<Label for="pomodoro" class="font-medium text-slate-700">
+								Pomodoro
+							</Label>
 							<Input
 								type="number"
 								id="pomodoro"
 								placeholder="25"
 								required
-								bind:value={data.config.timer.time.pomodoro}
-							/>
+								bind:value={data.config.timer.time.pomodoro} />
 						</div>
 						<div>
-							<Label for="short-break" class="font-medium text-slate-700">Short Break</Label>
+							<Label for="short-break" class="font-medium text-slate-700">
+								Short Break
+							</Label>
 							<Input
 								type="number"
 								id="short-break"
 								placeholder="5"
 								required
-								bind:value={data.config.timer.time.shortBreak}
-							/>
+								bind:value={data.config.timer.time.shortBreak} />
 						</div>
 						<div>
-							<Label for="long-break" class="font-medium text-slate-700">Long Break</Label>
+							<Label for="long-break" class="font-medium text-slate-700">
+								Long Break
+							</Label>
 							<Input
 								type="number"
 								id="long-break"
 								placeholder="15"
 								required
-								bind:value={data.config.timer.time.longBreak}
-							/>
+								bind:value={data.config.timer.time.longBreak} />
 						</div>
 					</div>
 				</div>
 				<div class="flex justify-between items-center">
-					<Label for="auto-start-break" class="font-medium text-slate-700 w-full"
-						>Auto Start Breaks</Label
-					>
-					<Switch id="auto-start-break" bind:checked={data.config.timer.autoStart.breaks} />
+					<Label
+						for="auto-start-break"
+						class="font-medium text-slate-700 w-full">Auto Start Breaks</Label>
+					<Switch
+						id="auto-start-break"
+						bind:checked={data.config.timer.autoStart.breaks} />
 				</div>
 				<div class="flex justify-between items-center">
-					<Label for="auto-start-pomodoros" class="font-medium text-slate-700 w-full"
-						>Auto Start Pomodoros</Label
-					>
-					<Switch id="auto-start-pomodoros" bind:checked={data.config.timer.autoStart.pomodoros} />
+					<Label
+						for="auto-start-pomodoros"
+						class="font-medium text-slate-700 w-full">
+						Auto Start Pomodoros
+					</Label>
+					<Switch
+						id="auto-start-pomodoros"
+						bind:checked={data.config.timer.autoStart.pomodoros} />
 				</div>
 				<div class="flex justify-between items-center">
-					<Label for="long-break-interval" class="font-medium text-slate-700 w-full"
-						>Long Break Interval</Label
-					>
+					<Label
+						for="long-break-interval"
+						class="font-medium text-slate-700 w-full">
+						Long Break Interval
+					</Label>
 					<Input
 						type="number"
 						id="long-break-interval"
 						placeholder="4"
 						class="w-24"
 						required
-						bind:value={data.config.timer.longBreakInterval}
-					/>
+						bind:value={data.config.timer.longBreakInterval} />
 				</div>
 			</div>
 		</div>
 		<Dialog.Footer class="mt-4">
 			<Button type="button" variant="destructive" on:click={restoreDefault}>
 				<RotateCcwIcon class="h-4 w-4 mr-2" />
-				Restore Default</Button
-			>
+				Restore Default
+			</Button>
 			<Button type="button" on:click={saveConfig}>
 				<SaveIcon class="h-4 w-4 mr-2" />
-				Save changes</Button
-			>
+				Save changes
+			</Button>
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>
