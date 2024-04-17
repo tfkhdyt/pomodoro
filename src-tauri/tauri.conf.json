@@ -7,7 +7,7 @@
 		"distDir": "../build"
 	},
 	"package": {
-		"productName": "pomodoro",
+		"productName": "Pomodoro",
 		"version": "0.6.0"
 	},
 	"tauri": {
