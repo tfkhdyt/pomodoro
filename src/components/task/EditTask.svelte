@@ -25,7 +25,8 @@
 					...task,
 					title: $editTaskData.title,
 					note: $editTaskData.note,
-					est: $editTaskData.est
+					est: $editTaskData.est,
+					act: $editTaskData.act
 				};
 			}
 			return task;
@@ -51,15 +52,25 @@
 				placeholder="What are you working on?"
 				class="border-none ring-0 outline-none focus-visible:ring-0 rounded-none placeholder:text-lg placeholder:italic placeholder:text-gray-200 placeholder:font-semibold -ml-3 text-lg text-gray-700 font-semibold" />
 			<div class="flex flex-col gap-3 mt-4">
-				<Label for="est-pomodoros">Est Pomodoros</Label>
-				<Input
-					required
-					type="number"
-					id="est-pomodoros"
-					placeholder="4"
-					bind:value={$editTaskData.est}
-					min={1}
-					class="w-[80px]" />
+				<Label for="est-pomodoros">Act / Est Pomodoros</Label>
+				<div class="flex space-x-2">
+					<Input
+						required
+						type="number"
+						id="act-pomodoros"
+						placeholder="0"
+						bind:value={$editTaskData.act}
+						min={0}
+						class="w-[80px]" />
+					<Input
+						required
+						type="number"
+						id="est-pomodoros"
+						placeholder="4"
+						bind:value={$editTaskData.est}
+						min={1}
+						class="w-[80px]" />
+				</div>
 			</div>
 			{#if addNote}
 				<Textarea bind:value={$editTaskData.note} placeholder="Some notes..." />
