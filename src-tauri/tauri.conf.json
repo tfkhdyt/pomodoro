@@ -56,7 +56,7 @@
 				"icons/icon.ico"
 			],
 			"identifier": "dev.tfkhdyt.pomodoro",
-			"longDescription": "",
+			"longDescription": "Minimalistic Pomodoro Timer App Written In Tauri and SvelteKit",
 			"macOS": {
 				"entitlements": null,
 				"exceptionDomain": "",
@@ -65,8 +65,8 @@
 				"signingIdentity": null
 			},
 			"resources": ["./audio/button-press.wav", "./audio/alarm-kitchen.mp3"],
-			"shortDescription": "",
-			"targets": ["deb"],
+			"shortDescription": "Pomodoro Timer",
+			"targets": ["deb", "nsis", "app"],
 			"windows": {
 				"certificateThumbprint": null,
 				"digestAlgorithm": "sha256",

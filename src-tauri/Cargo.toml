@@ -1,12 +1,12 @@
 [package]
-name         = "pomodoro"
-version      = "0.2.0"
-description  = "Minimalistic Pomodoro GUI App Written In Tauri and SvelteKit"
-authors      = ["tfkhdyt"]
-license      = ""
-repository   = ""
-default-run  = "pomodoro"
-edition      = "2021"
+name = "pomodoro"
+version = "0.7.0"
+description = "Minimalistic Pomodoro Timer App Written In Tauri and SvelteKit"
+authors = ["tfkhdyt"]
+license = ""
+repository = ""
+default-run = "pomodoro"
+edition = "2021"
 rust-version = "1.60"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -37,8 +37,8 @@ rodio = "0.17.3"
 custom-protocol = ["tauri/custom-protocol"]
 
 [profile.release]
-strip         = true
-opt-level     = "z"
-lto           = true
+strip = true
+opt-level = "z"
+lto = true
 codegen-units = 1
-panic         = "abort"
+panic = "abort"
