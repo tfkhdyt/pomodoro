@@ -16,7 +16,9 @@
 	export let reps: number;
 
 	$: totalAct = data.appData.tasks.reduce((a, b) => a + b.act, 0);
-	$: totalEst = data.appData.tasks.reduce((a, b) => a + b.est, 0);
+	$: totalEst = data.appData.tasks
+		.filter((t) => !t.done)
+		.reduce((a, b) => a + b.est, 0);
 	$: finishAtMinute = (() => {
 		let rep = reps;
 		let result = 0;
@@ -76,37 +78,39 @@
 					config={data.config} />
 			{/each}
 		</div>
-		<div
-			class={cn(
-				'flex space-x-6 items-baseline justify-center rounded-md px-2 py-6 text-center border-t border-white rounded-t-none',
-				match(data.appData.pomodoroState)
-					.with('pomodoro', () => 'bg-[#c15c5c]')
-					.with('short-break', () => 'bg-[#4c9196]')
-					.with('long-break', () => 'bg-[#4d7fa2]')
-					.exhaustive()
-			)}>
-			<div class="text-white/75 font-medium">
-				Pomos:
-				<span class="text-white text-2xl font-semibold ml-1">{totalAct}</span>
-				<span>/</span>
-				<span class="text-white text-2xl font-semibold">
-					{match(totalAct > totalEst)
-						.with(true, () => totalAct)
-						.otherwise(() => totalEst)}
-				</span>
+		{#if totalEst > 0}
+			<div
+				class={cn(
+					'flex space-x-6 items-baseline justify-center rounded-md px-2 py-6 text-center border-t border-white rounded-t-none',
+					match(data.appData.pomodoroState)
+						.with('pomodoro', () => 'bg-[#c15c5c]')
+						.with('short-break', () => 'bg-[#4c9196]')
+						.with('long-break', () => 'bg-[#4d7fa2]')
+						.exhaustive()
+				)}>
+				<div class="text-white/75 font-medium">
+					Pomos:
+					<span class="text-white text-2xl font-semibold ml-1">{totalAct}</span>
+					<span>/</span>
+					<span class="text-white text-2xl font-semibold">
+						{match(totalAct > totalEst)
+							.with(true, () => totalAct)
+							.otherwise(() => totalEst)}
+					</span>
+				</div>
+				<div class="text-white/75 font-medium">
+					Finish At:
+					<span class="text-white text-2xl font-semibold ml-1">
+						{format(add(new Date(), { minutes: finishAtMinute }), 'HH:mm')}
+					</span>
+					<span class="ml-1">
+						({formatDistanceToNowStrict(
+							add(new Date(), { minutes: finishAtMinute })
+						)})
+					</span>
+				</div>
 			</div>
-			<div class="text-white/75 font-medium">
-				Finish At:
-				<span class="text-white text-2xl font-semibold ml-1">
-					{format(add(new Date(), { minutes: finishAtMinute }), 'HH:mm')}
-				</span>
-				<span class="ml-1">
-					({formatDistanceToNowStrict(
-						add(new Date(), { minutes: finishAtMinute })
-					)})
-				</span>
-			</div>
-		</div>
+		{/if}
 	{/if}
 </section>
 <EditTask appData={data.appData} {save} />
