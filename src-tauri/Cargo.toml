@@ -1,6 +1,6 @@
 [package]
 name = "pomodoro"
-version = "0.7.0"
+version = "0.7.1"
 description = "Minimalistic Pomodoro Timer App Written In Tauri and SvelteKit"
 authors = ["tfkhdyt"]
 license = ""
