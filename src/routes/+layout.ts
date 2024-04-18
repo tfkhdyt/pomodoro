@@ -46,7 +46,9 @@ export const load: LayoutLoad = async () => {
 			JSON.stringify(
 				{
 					activeTask: null,
-					tasks: []
+					tasks: [],
+					reps: 1,
+					pomodoroState: 'pomodoro'
 				},
 				null,
 				2
@@ -59,6 +61,10 @@ export const load: LayoutLoad = async () => {
 
 	const data = await readTextFile('data.json', { dir: BaseDirectory.AppData });
 	const currentData = JSON.parse(data) as Data;
+	currentData.reps ??= 1;
+	currentData.pomodoroState ??= 'pomodoro';
+	currentData.activeTask ??= null;
+	currentData.tasks ??= [];
 
 	return { config: currentConfig, appData: currentData };
 };

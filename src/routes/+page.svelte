@@ -1,23 +1,22 @@
 <script lang="ts">
+	import { invalidateAll } from '$app/navigation';
 	import Card from '@/components/Card.svelte';
 	import Count from '@/components/Count.svelte';
+	import Tasks from '@/components/task/Tasks.svelte';
 	import Progress from '@/components/ui/progress/progress.svelte';
-	import type { ButtonState, PomodoroType } from '@/types';
+	import type { ButtonState } from '@/types';
 	import { cn } from '@/utils';
 	import { confirm } from '@tauri-apps/api/dialog';
+	import { BaseDirectory, writeTextFile } from '@tauri-apps/api/fs';
 	import {
 		isPermissionGranted,
 		requestPermission,
 		sendNotification
 	} from '@tauri-apps/api/notification';
 	import { invoke } from '@tauri-apps/api/tauri';
-	import { appWindow } from '@tauri-apps/api/window';
 	import { onDestroy } from 'svelte';
 	import { match } from 'ts-pattern';
 	import type { LayoutData } from './$types';
-	import Tasks from '@/components/task/Tasks.svelte';
-	import { BaseDirectory, writeTextFile } from '@tauri-apps/api/fs';
-	import { invalidateAll } from '$app/navigation';
 
 	export let data: LayoutData;
 
@@ -28,11 +27,9 @@
 
 	$: longBreakInterval = data.config.timer.longBreakInterval;
 
-	let pomodoroType: PomodoroType = 'pomodoro';
 	let buttonState: ButtonState = 'paused';
 
-	let reps = 1;
-	$: targetMinutes = match(pomodoroType)
+	$: targetMinutes = match(data.appData.pomodoroState)
 		.with('pomodoro', () => data.config.timer.time.pomodoro)
 		.with('short-break', () => data.config.timer.time.shortBreak)
 		.with('long-break', () => data.config.timer.time.longBreak)
@@ -48,18 +45,6 @@
 	$: if (!permissionGranted) {
 		askNotifPermission();
 	}
-
-	$: (async () => {
-		switch (pomodoroType) {
-			case 'pomodoro':
-				await appWindow.setTitle('Time to focus! — Pomodoro');
-				break;
-			case 'short-break':
-			case 'long-break':
-				await appWindow.setTitle('Time for a break! — Pomodoro');
-				break;
-		}
-	})();
 
 	async function askNotifPermission() {
 		const permission = await requestPermission();
@@ -152,9 +137,13 @@
 
 		pause();
 
-		if (pomodoroType === 'pomodoro' && reps % longBreakInterval !== 0) {
+		if (
+			data.appData.pomodoroState === 'pomodoro' &&
+			data.appData.reps % longBreakInterval !== 0
+		) {
 			sendNotification({ title: 'Time to take a short break!' });
-			pomodoroType = 'short-break';
+			data.appData.pomodoroState = 'short-break';
+			await save();
 			timeLeft = targetMinutes * 60;
 
 			await incrementActiveTaskAct();
@@ -163,9 +152,13 @@
 			if (data.config.timer.autoStart.breaks) {
 				startInterval();
 			}
-		} else if (pomodoroType === 'pomodoro' && reps % longBreakInterval === 0) {
+		} else if (
+			data.appData.pomodoroState === 'pomodoro' &&
+			data.appData.reps % longBreakInterval === 0
+		) {
 			sendNotification({ title: 'Time to take a long break!' });
-			pomodoroType = 'long-break';
+			data.appData.pomodoroState = 'long-break';
+			await save();
 			timeLeft = targetMinutes * 60;
 
 			await incrementActiveTaskAct();
@@ -175,9 +168,10 @@
 				startInterval();
 			}
 		} else {
-			reps++;
+			data.appData.reps = data.appData.reps + 1;
 			sendNotification({ title: 'Time to focus!' });
-			pomodoroType = 'pomodoro';
+			data.appData.pomodoroState = 'pomodoro';
+			await save();
 			timeLeft = targetMinutes * 60;
 
 			if (data.config.timer.autoStart.pomodoros) {
@@ -208,8 +202,9 @@
 
 		if (confirmed) {
 			pause();
-			reps = 1;
-			pomodoroType = 'pomodoro';
+			data.appData.reps = 1;
+			await save();
+			data.appData.pomodoroState = 'pomodoro';
 			timeLeft = targetMinutes * 60;
 		}
 	}
@@ -237,7 +232,7 @@
 <main
 	class={cn(
 		'mx-auto flex min-h-[100svh] py-4 flex-col text-center text-white transition duration-500',
-		match(pomodoroType)
+		match(data.appData.pomodoroState)
 			.with('pomodoro', () => 'bg-[#BA4949]')
 			.with('short-break', () => 'bg-[#38858a]')
 			.with('long-break', () => 'bg-[#397097]')
@@ -248,13 +243,13 @@
 		value={progress}
 		class={cn(
 			'w-[450px] md:w-[500px] mx-auto mb-4 h-2 dark',
-			match(pomodoroType)
+			match(data.appData.pomodoroState)
 				.with('pomodoro', () => 'bg-[#c15c5c]')
 				.with('short-break', () => 'bg-[#4c9196]')
 				.with('long-break', () => 'bg-[#4d7fa2]')
 				.exhaustive()
 		)} />
-	<Card {buttonState} {handleClick} {nextStep} {timer} {pomodoroType} {data} />
-	<Count {data} {pomodoroType} {reps} {resetReps} />
-	<Tasks {data} {save} {switchTask} {pomodoroType} {reps} />
+	<Card {buttonState} {handleClick} {nextStep} {timer} {data} />
+	<Count {data} reps={data.appData.reps} {resetReps} />
+	<Tasks {data} {save} {switchTask} reps={data.appData.reps} />
 </main>

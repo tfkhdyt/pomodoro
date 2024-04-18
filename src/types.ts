@@ -31,5 +31,7 @@ export type Task = {
 
 export type Data = {
 	activeTask: number | null;
+	reps: number;
+	pomodoroState: PomodoroType;
 	tasks: Task[];
 };
