@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PomodoroType, Task } from '@/types';
+	import type { Task } from '@/types';
 	import { cn } from '@/utils';
 	import { add, format, formatDistanceToNowStrict } from 'date-fns';
 	import { dndzone, type DndEvent } from 'svelte-dnd-action';
@@ -13,7 +13,6 @@
 	export let data: LayoutData;
 	export let save: () => Promise<void>;
 	export let switchTask: (id: number) => Promise<void>;
-	export let pomodoroType: PomodoroType;
 	export let reps: number;
 
 	$: totalAct = data.appData.tasks.reduce((a, b) => a + b.act, 0);
@@ -65,7 +64,7 @@
 			}}
 			on:consider={handleDnsConsider}
 			on:finalize={handleDndFinalize}
-			class="space-y-2 overflow-scroll">
+			class="space-y-2">
 			<!-- animate:flip={{ duration: flipDurationMs }} -->
 
 			{#each data.appData.tasks as item (item.id)}
@@ -77,37 +76,37 @@
 					config={data.config} />
 			{/each}
 		</div>
+		<div
+			class={cn(
+				'flex space-x-6 items-baseline justify-center rounded-md px-2 py-6 text-center border-t border-white rounded-t-none',
+				match(data.appData.pomodoroState)
+					.with('pomodoro', () => 'bg-[#c15c5c]')
+					.with('short-break', () => 'bg-[#4c9196]')
+					.with('long-break', () => 'bg-[#4d7fa2]')
+					.exhaustive()
+			)}>
+			<div class="text-white/75 font-medium">
+				Pomos:
+				<span class="text-white text-2xl font-semibold ml-1">{totalAct}</span>
+				<span>/</span>
+				<span class="text-white text-2xl font-semibold">
+					{match(totalAct > totalEst)
+						.with(true, () => totalAct)
+						.otherwise(() => totalEst)}
+				</span>
+			</div>
+			<div class="text-white/75 font-medium">
+				Finish At:
+				<span class="text-white text-2xl font-semibold ml-1">
+					{format(add(new Date(), { minutes: finishAtMinute }), 'HH:mm')}
+				</span>
+				<span class="ml-1">
+					({formatDistanceToNowStrict(
+						add(new Date(), { minutes: finishAtMinute })
+					)})
+				</span>
+			</div>
+		</div>
 	{/if}
-	<div
-		class={cn(
-			'flex space-x-6 items-baseline justify-center rounded-md px-2 py-6 text-center border-t border-white rounded-t-none',
-			match(pomodoroType)
-				.with('pomodoro', () => 'bg-[#c15c5c]')
-				.with('short-break', () => 'bg-[#4c9196]')
-				.with('long-break', () => 'bg-[#4d7fa2]')
-				.exhaustive()
-		)}>
-		<div class="text-white/75 font-medium">
-			Pomos:
-			<span class="text-white text-2xl font-semibold ml-1">{totalAct}</span>
-			<span>/</span>
-			<span class="text-white text-2xl font-semibold">
-				{match(totalAct > totalEst)
-					.with(true, () => totalAct)
-					.otherwise(() => totalEst)}
-			</span>
-		</div>
-		<div class="text-white/75 font-medium">
-			Finish At:
-			<span class="text-white text-2xl font-semibold ml-1">
-				{format(add(new Date(), { minutes: finishAtMinute }), 'HH:mm')}
-			</span>
-			<span class="ml-1">
-				({formatDistanceToNowStrict(
-					add(new Date(), { minutes: finishAtMinute })
-				)})
-			</span>
-		</div>
-	</div>
 </section>
 <EditTask appData={data.appData} {save} />
