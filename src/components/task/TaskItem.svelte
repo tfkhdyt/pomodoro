@@ -20,6 +20,8 @@
 	export let save: () => Promise<void>;
 	export let switchTask: (id: number) => Promise<void>;
 
+	$: canResetActPomodoro = item.act > 0;
+
 	async function toggleMark(id: number) {
 		appData.tasks = appData.tasks.map((it) => {
 			if (it.id === id) {
@@ -129,7 +131,9 @@
 			<PencilIcon class="w-4 h-4 mr-2" />
 			Update
 		</ContextMenu.Item>
-		<ContextMenu.Item on:click={async () => await resetActPomodoro(item.id)}>
+		<ContextMenu.Item
+			on:click={async () => await resetActPomodoro(item.id)}
+			disabled={!canResetActPomodoro}>
 			<RotateCcwIcon class="w-4 h-4 mr-2" />
 			Reset Act Pomodoro
 		</ContextMenu.Item>
