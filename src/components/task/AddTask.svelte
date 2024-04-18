@@ -50,15 +50,16 @@
 </script>
 
 <Dialog.Root {open} {onOpenChange}>
-	<Dialog.Trigger class="w-full focus:outline-none">
+	<Dialog.Trigger class="w-full focus:outline-none" asChild let:builder>
 		<button
+			use:builder.action
+			{...builder}
 			class={cn(
 				'w-full bg-black/10 rounded-md p-5 text-white/55 hover:text-white/70 font-bold focus:outline-none border-white/55 hover:border-white/70 border-2 border-dashed'
-			)}
-		>
+			)}>
 			Add Task
-		</button></Dialog.Trigger
-	>
+		</button>
+	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
 			<Dialog.Title>Add New Task</Dialog.Title>
@@ -69,8 +70,7 @@
 				bind:value={title}
 				type="text"
 				placeholder="What are you working on?"
-				class="border-none ring-0 outline-none focus-visible:ring-0 rounded-none placeholder:text-lg placeholder:italic placeholder:text-gray-200 placeholder:font-semibold -ml-3 text-lg text-gray-700 font-semibold"
-			/>
+				class="border-none ring-0 outline-none focus-visible:ring-0 rounded-none placeholder:text-lg placeholder:italic placeholder:text-gray-200 placeholder:font-semibold -ml-3 text-lg text-gray-700 font-semibold" />
 			<div class="flex flex-col gap-3 mt-4">
 				<Label for="est-pomodoros">Est Pomodoros</Label>
 				<Input
@@ -80,22 +80,20 @@
 					placeholder="4"
 					bind:value={estPomodoros}
 					min={1}
-					class="w-[80px]"
-				/>
+					class="w-[80px]" />
 			</div>
 			{#if addNote}
 				<Textarea bind:value={note} placeholder="Some notes..." />
 			{:else}
-				<button class="underline font-medium text-sm" on:click={() => (addNote = true)}
-					>+ Add Note</button
-				>
+				<button
+					class="underline font-medium text-sm"
+					on:click={() => (addNote = true)}>+ Add Note</button>
 			{/if}
 		</div>
 		<Dialog.Footer>
 			<Button type="button" on:click={handleSave}>
 				<SaveIcon class="w-4 h-4 mr-2" />
-				Save</Button
-			>
+				Save</Button>
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>

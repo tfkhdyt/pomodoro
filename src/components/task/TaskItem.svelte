@@ -84,8 +84,10 @@
 </script>
 
 <ContextMenu.Root>
-	<ContextMenu.Trigger>
+	<ContextMenu.Trigger asChild let:builder>
 		<button
+			use:builder.action
+			{...builder}
 			class={cn(
 				'w-full bg-white rounded-md py-3 pl-3 pr-5 text-slate-700 font-semibold border-l-[6px] focus:outline-none space-y-2 cursor-grab',
 				item.id === appData.activeTask
