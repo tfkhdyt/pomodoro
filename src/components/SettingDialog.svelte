@@ -194,7 +194,7 @@
 				</div>
 			</div>
 		</div>
-		<Dialog.Footer class="mt-4">
+		<Dialog.Footer class="mt-4 gap-2">
 			<Button type="button" variant="destructive" on:click={restoreDefault}>
 				<RotateCcwIcon class="h-4 w-4 mr-2" />
 				Restore Default
