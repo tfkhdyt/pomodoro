@@ -38,6 +38,7 @@
     "@tauri-apps/api": "^1.5.3",
     "bits-ui": "^0.21.3",
     "clsx": "^2.1.0",
+    "date-fns": "^3.6.0",
     "lucide-svelte": "^0.368.0",
     "svelte-dnd-action": "^0.9.43",
     "tailwind-merge": "^2.2.2",

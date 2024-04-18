@@ -256,5 +256,5 @@
 		)} />
 	<Card {buttonState} {handleClick} {nextStep} {timer} {pomodoroType} {data} />
 	<Count {data} {pomodoroType} {reps} {resetReps} />
-	<Tasks {data} {save} {switchTask} />
+	<Tasks {data} {save} {switchTask} {pomodoroType} {reps} />
 </main>
