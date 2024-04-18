@@ -8,7 +8,7 @@
 	},
 	"package": {
 		"productName": "Pomodoro",
-		"version": "0.7.1"
+		"version": "0.7.2"
 	},
 	"tauri": {
 		"allowlist": {
@@ -82,11 +82,11 @@
 		"windows": [
 			{
 				"fullscreen": false,
-				"height": 600,
+				"height": 900,
 				"resizable": true,
 				"title": "Pomodoro",
-				"width": 800,
-				"minWidth": 400
+				"width": 700,
+				"minWidth": 500
 			}
 		]
 	}
