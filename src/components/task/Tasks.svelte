@@ -15,10 +15,13 @@
 	export let switchTask: (id: number) => Promise<void>;
 	export let reps: number;
 
-	$: totalAct = data.appData.tasks.reduce((a, b) => a + b.act, 0);
+	$: totalAct = data.appData.tasks
+		.filter((t) => !t.done)
+		.reduce((a, b) => a + b.act, 0);
 	$: totalEst = data.appData.tasks
 		.filter((t) => !t.done)
 		.reduce((a, b) => a + b.est, 0);
+
 	$: finishAtMinute = (() => {
 		let rep = reps;
 		let result = 0;
