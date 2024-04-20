@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Task } from '@/types';
+	import type { Config, Task } from '@/types';
 	import { cn } from '@/utils';
 	import { add, format, formatDistanceToNowStrict } from 'date-fns';
 	import { dndzone, type DndEvent } from 'svelte-dnd-action';
@@ -22,23 +22,35 @@
 		.filter((t) => !t.done)
 		.reduce((a, b) => a + b.est, 0);
 
-	$: finishAtMinute = (() => {
+	$: finishAtMinute = calculateFinishAtMinute(
+		totalAct,
+		totalEst,
+		reps,
+		data.config
+	);
+
+	function calculateFinishAtMinute(
+		act: number,
+		est: number,
+		reps: number,
+		config: Config
+	) {
 		let rep = reps;
 		let result = 0;
 
-		for (let i = totalAct; i < totalEst; i++) {
-			result += data.config.timer.time.pomodoro;
+		for (let i = act; i < est; i++) {
+			result += config.timer.time.pomodoro;
 			if (rep % 4 === 0) {
-				result += data.config.timer.time.longBreak;
+				result += config.timer.time.longBreak;
 			} else {
-				result += data.config.timer.time.shortBreak;
+				result += config.timer.time.shortBreak;
 			}
 
 			rep++;
 		}
 
 		return result;
-	})();
+	}
 
 	const flipDurationMs = 200;
 	function handleDnsConsider(e: CustomEvent<DndEvent<Task>>) {
