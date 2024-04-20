@@ -9,6 +9,7 @@
 	import ClearMenu from './ClearMenu.svelte';
 	import EditTask from './EditTask.svelte';
 	import TaskItem from './TaskItem.svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	export let data: LayoutData;
 	export let save: () => Promise<void>;
@@ -27,6 +28,23 @@
 		totalEst,
 		reps,
 		data.config
+	);
+	$: date = new Date();
+	let intervalId: number;
+
+	onMount(() => {
+		intervalId = setInterval(() => {
+			date = new Date();
+		}, 60000);
+	});
+
+	onDestroy(() => {
+		clearInterval(intervalId);
+	});
+
+	$: finishAt = format(add(date, { minutes: finishAtMinute }), 'HH:mm');
+	$: finishAtDistance = formatDistanceToNowStrict(
+		add(date, { minutes: finishAtMinute })
 	);
 
 	function calculateFinishAtMinute(
@@ -116,12 +134,10 @@
 				<div class="text-white/75 font-medium">
 					Finish At:
 					<span class="text-white text-2xl font-semibold ml-1">
-						{format(add(new Date(), { minutes: finishAtMinute }), 'HH:mm')}
+						{finishAt}
 					</span>
 					<span class="ml-1">
-						({formatDistanceToNowStrict(
-							add(new Date(), { minutes: finishAtMinute })
-						)})
+						({finishAtDistance})
 					</span>
 				</div>
 			</div>
