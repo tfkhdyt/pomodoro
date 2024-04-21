@@ -67,7 +67,7 @@
 			},
 			"resources": ["./audio/button-press.wav", "./audio/alarm-kitchen.mp3"],
 			"shortDescription": "Pomodoro Timer",
-			"targets": ["deb", "nsis", "app", "dmg"],
+			"targets": ["deb", "nsis"],
 			"windows": {
 				"certificateThumbprint": null,
 				"digestAlgorithm": "sha256",
