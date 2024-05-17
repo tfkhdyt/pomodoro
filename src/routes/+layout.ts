@@ -48,7 +48,8 @@ export const load: LayoutLoad = async () => {
 					activeTask: null,
 					tasks: [],
 					reps: 1,
-					pomodoroState: 'pomodoro'
+					pomodoroState: 'pomodoro',
+					lastTime: null
 				},
 				null,
 				2
@@ -65,6 +66,7 @@ export const load: LayoutLoad = async () => {
 	currentData.pomodoroState ??= 'pomodoro';
 	currentData.activeTask ??= null;
 	currentData.tasks ??= [];
+	currentData.lastTime ??= null;
 
 	return { config: currentConfig, appData: currentData };
 };

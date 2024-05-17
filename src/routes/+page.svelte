@@ -6,7 +6,9 @@
 	import Progress from '@/components/ui/progress/progress.svelte';
 	import type { ButtonState } from '@/types';
 	import { cn } from '@/utils';
+	import { window } from '@tauri-apps/api';
 	import { confirm } from '@tauri-apps/api/dialog';
+	import { TauriEvent } from '@tauri-apps/api/event';
 	import { BaseDirectory, writeTextFile } from '@tauri-apps/api/fs';
 	import {
 		isPermissionGranted,
@@ -17,13 +19,9 @@
 	import { onDestroy } from 'svelte';
 	import { match } from 'ts-pattern';
 	import type { LayoutData } from './$types';
+	import { exit } from '@tauri-apps/api/process';
 
 	export let data: LayoutData;
-
-	let permissionGranted: boolean;
-	(async () => {
-		permissionGranted = await isPermissionGranted();
-	})();
 
 	$: longBreakInterval = data.config.timer.longBreakInterval;
 
@@ -34,7 +32,7 @@
 		.with('short-break', () => data.config.timer.time.shortBreak)
 		.with('long-break', () => data.config.timer.time.longBreak)
 		.exhaustive();
-	$: timeLeft = targetMinutes * 60;
+	$: timeLeft = data.appData.lastTime || targetMinutes * 60;
 	$: timer = `${Math.floor(timeLeft / 60)
 		.toString()
 		.padStart(2, '0')}:${(timeLeft % 60).toString().padStart(2, '0')}`;
@@ -42,9 +40,20 @@
 
 	let intervalId: number;
 
+	let permissionGranted: boolean;
+	(async () => {
+		permissionGranted = await isPermissionGranted();
+	})();
+
 	$: if (!permissionGranted) {
 		askNotifPermission();
 	}
+
+	window.getCurrent().listen(TauriEvent.WINDOW_CLOSE_REQUESTED, async () => {
+		data.appData.lastTime = timeLeft;
+		await save();
+		await exit();
+	});
 
 	async function askNotifPermission() {
 		const permission = await requestPermission();
@@ -226,7 +235,9 @@
 		await invalidateAll();
 	}
 
-	onDestroy(() => clearInterval(intervalId));
+	onDestroy(() => {
+		clearInterval(intervalId);
+	});
 </script>
 
 <main

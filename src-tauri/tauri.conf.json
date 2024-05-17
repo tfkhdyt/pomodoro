@@ -38,6 +38,9 @@
 				"readDir": true,
 				"createDir": true,
 				"exists": true
+			},
+			"process": {
+				"exit": true
 			}
 		},
 		"bundle": {

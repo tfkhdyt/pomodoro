@@ -34,4 +34,5 @@ export type Data = {
 	reps: number;
 	pomodoroState: PomodoroType;
 	tasks: Task[];
+	lastTime: number | undefined | null;
 };
