@@ -152,6 +152,7 @@
 		) {
 			sendNotification({ title: 'Time to take a short break!' });
 			data.appData.pomodoroState = 'short-break';
+			data.appData.lastTime = null;
 			await save();
 			timeLeft = targetMinutes * 60;
 
@@ -167,6 +168,7 @@
 		) {
 			sendNotification({ title: 'Time to take a long break!' });
 			data.appData.pomodoroState = 'long-break';
+			data.appData.lastTime = null;
 			await save();
 			timeLeft = targetMinutes * 60;
 
@@ -180,6 +182,7 @@
 			data.appData.reps = data.appData.reps + 1;
 			sendNotification({ title: 'Time to focus!' });
 			data.appData.pomodoroState = 'pomodoro';
+			data.appData.lastTime = null;
 			await save();
 			timeLeft = targetMinutes * 60;
 
@@ -212,8 +215,9 @@
 		if (confirmed) {
 			pause();
 			data.appData.reps = 1;
-			await save();
+			data.appData.lastTime = null;
 			data.appData.pomodoroState = 'pomodoro';
+			await save();
 			timeLeft = targetMinutes * 60;
 		}
 	}
