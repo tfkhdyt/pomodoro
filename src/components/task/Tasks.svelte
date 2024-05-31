@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Config, Task } from '@/types';
+	import type { ButtonState, Config, Task } from '@/types';
 	import { cn } from '@/utils';
 	import { add, format, formatDistanceToNowStrict } from 'date-fns';
 	import { dndzone, type DndEvent } from 'svelte-dnd-action';
@@ -11,6 +11,7 @@
 	import TaskItem from './TaskItem.svelte';
 	import { onDestroy, onMount } from 'svelte';
 
+	export let buttonState: ButtonState;
 	export let data: LayoutData;
 	export let save: () => Promise<void>;
 	export let switchTask: (id: number) => Promise<void>;
@@ -104,6 +105,7 @@
 
 			{#each data.appData.tasks as item (item.id)}
 				<TaskItem
+					{buttonState}
 					appData={data.appData}
 					{item}
 					{save}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as ContextMenu from '@/components/ui/context-menu';
 	import * as Alert from '@/components/ui/alert';
-	import type { Config, Data, Task } from '@/types';
+	import type { ButtonState, Config, Data, Task } from '@/types';
 	import { cn } from '@/utils';
 	import {
 		CircleCheckIcon,
@@ -14,6 +14,7 @@
 	import { confirm } from '@tauri-apps/api/dialog';
 	import { editTaskData, showEditTaskModal } from '@/stores/edit-task';
 
+	export let buttonState: ButtonState;
 	export let item: Task;
 	export let appData: Data;
 	export let config: Config;
@@ -38,6 +39,15 @@
 	}
 
 	async function setActiveTask(id: number) {
+		if (buttonState === 'playing') {
+			const confirmed = await confirm('Do you want to switch task?', {
+				type: 'warning'
+			});
+
+			if (!confirmed) {
+				return;
+			}
+		}
 		appData.activeTask = id;
 		await save();
 	}
