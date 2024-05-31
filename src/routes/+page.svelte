@@ -16,7 +16,7 @@
 		sendNotification
 	} from '@tauri-apps/api/notification';
 	import { invoke } from '@tauri-apps/api/tauri';
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { match } from 'ts-pattern';
 	import type { LayoutData } from './$types';
 	import { exit } from '@tauri-apps/api/process';
@@ -32,11 +32,15 @@
 		.with('short-break', () => data.config.timer.time.shortBreak)
 		.with('long-break', () => data.config.timer.time.longBreak)
 		.exhaustive();
-	$: timeLeft = data.appData.lastTime || targetMinutes * 60;
+	$: timeLeft = targetMinutes * 60;
 	$: timer = `${Math.floor(timeLeft / 60)
 		.toString()
 		.padStart(2, '0')}:${(timeLeft % 60).toString().padStart(2, '0')}`;
 	$: progress = 100 - (timeLeft / 60 / targetMinutes) * 100;
+
+	onMount(() => {
+		timeLeft = data.appData.lastTime ?? targetMinutes * 60;
+	});
 
 	let intervalId: number;
 
@@ -266,5 +270,5 @@
 		)} />
 	<Card {buttonState} {handleClick} {nextStep} {timer} {data} />
 	<Count {data} reps={data.appData.reps} {resetReps} />
-	<Tasks {data} {save} {switchTask} reps={data.appData.reps} />
+	<Tasks {data} {save} {switchTask} reps={data.appData.reps} {buttonState} />
 </main>
