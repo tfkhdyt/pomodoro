@@ -20,6 +20,7 @@
 	import { match } from 'ts-pattern';
 	import type { LayoutData } from './$types';
 	import { exit } from '@tauri-apps/plugin-process';
+	import { resourceDir } from '@tauri-apps/api/path';
 
 	export let data: LayoutData;
 
@@ -39,7 +40,9 @@
 	$: progress = 100 - (timeLeft / 60 / targetMinutes) * 100;
 
 	let lastTimeInterval: number;
-	onMount(() => {
+	onMount(async () => {
+		console.log('Resource dir:', await resourceDir());
+
 		timeLeft = data.appData.lastTime ?? targetMinutes * 60;
 
 		lastTimeInterval = setInterval(async () => {
