@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
-	import { env } from '$env/dynamic/public';
 	import Card from '@/components/Card.svelte';
 	import Count from '@/components/Count.svelte';
 	import Tasks from '@/components/task/Tasks.svelte';
@@ -271,9 +270,7 @@
 			.exhaustive(),
 		data.appData.tasks.length === 0 && 'justify-center'
 	)}>
-	{#if !!env.PUBLIC_POMO_DEBUG}
-		{myResourceDir}
-	{/if}
+	{myResourceDir}
 	<Progress
 		value={progress}
 		class={cn(
