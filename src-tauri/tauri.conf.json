@@ -12,7 +12,8 @@
     "copyright": "",
     "targets": [
       "deb",
-      "nsis"
+      "nsis",
+      "appimage"
     ],
     "externalBin": [],
     "icon": [
@@ -49,7 +50,7 @@
   },
   "productName": "Pomodoro",
   "mainBinaryName": "Pomodoro",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "identifier": "dev.tfkhdyt.pomodoro",
   "plugins": {},
   "app": {
