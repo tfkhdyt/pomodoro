@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
+	import { env } from '$env/dynamic/public';
 	import Card from '@/components/Card.svelte';
 	import Count from '@/components/Count.svelte';
 	import Tasks from '@/components/task/Tasks.svelte';
@@ -7,20 +8,20 @@
 	import type { ButtonState } from '@/types';
 	import { cn } from '@/utils';
 	import { webviewWindow } from '@tauri-apps/api';
-	import { confirm } from '@tauri-apps/plugin-dialog';
+	import { invoke } from '@tauri-apps/api/core';
 	import { TauriEvent } from '@tauri-apps/api/event';
+	import { resourceDir } from '@tauri-apps/api/path';
+	import { confirm } from '@tauri-apps/plugin-dialog';
 	import { BaseDirectory, writeTextFile } from '@tauri-apps/plugin-fs';
 	import {
 		isPermissionGranted,
 		requestPermission,
 		sendNotification
 	} from '@tauri-apps/plugin-notification';
-	import { invoke } from '@tauri-apps/api/core';
+	import { exit } from '@tauri-apps/plugin-process';
 	import { onDestroy, onMount } from 'svelte';
 	import { match } from 'ts-pattern';
 	import type { LayoutData } from './$types';
-	import { exit } from '@tauri-apps/plugin-process';
-	import { resourceDir } from '@tauri-apps/api/path';
 
 	export let data: LayoutData;
 
@@ -41,8 +42,6 @@
 
 	let lastTimeInterval: number;
 	onMount(async () => {
-		console.log('Resource dir:', await resourceDir());
-
 		timeLeft = data.appData.lastTime ?? targetMinutes * 60;
 
 		lastTimeInterval = setInterval(async () => {
@@ -54,8 +53,10 @@
 	let intervalId: number;
 
 	let permissionGranted: boolean;
+	let myResourceDir: string;
 	(async () => {
 		permissionGranted = await isPermissionGranted();
+		myResourceDir = await resourceDir();
 	})();
 
 	$: if (!permissionGranted) {
@@ -270,6 +271,9 @@
 			.exhaustive(),
 		data.appData.tasks.length === 0 && 'justify-center'
 	)}>
+	{#if !!env.PUBLIC_POMO_DEBUG}
+		{myResourceDir}
+	{/if}
 	<Progress
 		value={progress}
 		class={cn(
