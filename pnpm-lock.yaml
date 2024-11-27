@@ -7,15 +7,27 @@ settings:
 importers:
 
   .:
-    dependencies:
+    devDependencies:
       '@fontsource-variable/montserrat':
-        specifier: ^5.0.19
+        specifier: ^5.1.0
         version: 5.1.0
+      '@sveltejs/adapter-static':
+        specifier: ^3.0.6
+        version: 3.0.6(@sveltejs/kit@2.8.5(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.11))(svelte@4.2.19)(vite@5.4.11))
+      '@sveltejs/kit':
+        specifier: ^2.8.5
+        version: 2.8.5(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.11))(svelte@4.2.19)(vite@5.4.11)
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^3.1.2
+        version: 3.1.2(svelte@4.2.19)(vite@5.4.11)
       '@tauri-apps/api':
         specifier: ^2.1.1
         version: 2.1.1
+      '@tauri-apps/cli':
+        specifier: ^2.1.0
+        version: 2.1.0
       '@tauri-apps/plugin-dialog':
-        specifier: ~2
+        specifier: ~2.0.1
         version: 2.0.1
       '@tauri-apps/plugin-fs':
         specifier: ~2.0.2
@@ -26,8 +38,20 @@ importers:
       '@tauri-apps/plugin-process':
         specifier: ~2
         version: 2.0.0
+      '@types/eslint':
+        specifier: ^8.56.12
+        version: 8.56.12
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^7.18.0
+        version: 7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2)
+      '@typescript-eslint/parser':
+        specifier: ^7.18.0
+        version: 7.18.0(eslint@8.57.1)(typescript@5.7.2)
+      autoprefixer:
+        specifier: ^10.4.20
+        version: 10.4.20(postcss@8.4.49)
       bits-ui:
-        specifier: ^0.21.7
+        specifier: ^0.21.16
         version: 0.21.16(svelte@4.2.19)
       clsx:
         specifier: ^2.1.1
@@ -35,81 +59,56 @@ importers:
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
-      lucide-svelte:
-        specifier: ^0.368.0
-        version: 0.368.0(svelte@4.2.19)
-      svelte-dnd-action:
-        specifier: ^0.9.45
-        version: 0.9.52(svelte@4.2.19)
-      tailwind-merge:
-        specifier: ^2.3.0
-        version: 2.5.5
-      tailwind-variants:
-        specifier: ^0.2.1
-        version: 0.2.1(tailwindcss@3.4.15)
-      ts-pattern:
-        specifier: ^5.1.1
-        version: 5.5.0
-    devDependencies:
-      '@sveltejs/adapter-static':
-        specifier: ^3.0.1
-        version: 3.0.6(@sveltejs/kit@2.8.4(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.11))(svelte@4.2.19)(vite@5.4.11))
-      '@sveltejs/kit':
-        specifier: ^2.5.8
-        version: 2.8.4(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.11))(svelte@4.2.19)(vite@5.4.11)
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^3.1.0
-        version: 3.1.2(svelte@4.2.19)(vite@5.4.11)
-      '@tauri-apps/cli':
-        specifier: ^2.1.0
-        version: 2.1.0
-      '@types/eslint':
-        specifier: ^8.56.10
-        version: 8.56.12
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^7.9.0
-        version: 7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2)
-      '@typescript-eslint/parser':
-        specifier: ^7.9.0
-        version: 7.18.0(eslint@8.57.1)(typescript@5.7.2)
-      autoprefixer:
-        specifier: ^10.4.19
-        version: 10.4.20(postcss@8.4.49)
       eslint:
-        specifier: ^8.57.0
+        specifier: ^8.57.1
         version: 8.57.1
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@8.57.1)
       eslint-plugin-svelte:
-        specifier: ^2.39.0
+        specifier: ^2.46.0
         version: 2.46.0(eslint@8.57.1)(svelte@4.2.19)
+      lucide-svelte:
+        specifier: ^0.368.0
+        version: 0.368.0(svelte@4.2.19)
       postcss:
-        specifier: ^8.4.38
+        specifier: ^8.4.49
         version: 8.4.49
       prettier:
-        specifier: ^3.2.5
-        version: 3.3.3
+        specifier: ^3.4.1
+        version: 3.4.1
       prettier-plugin-svelte:
-        specifier: ^3.2.3
-        version: 3.3.2(prettier@3.3.3)(svelte@4.2.19)
+        specifier: ^3.3.2
+        version: 3.3.2(prettier@3.4.1)(svelte@4.2.19)
       svelte:
-        specifier: ^4.2.17
+        specifier: ^4.2.19
         version: 4.2.19
       svelte-check:
-        specifier: ^3.7.1
+        specifier: ^3.8.6
         version: 3.8.6(postcss-load-config@4.0.2(postcss@8.4.49))(postcss@8.4.49)(svelte@4.2.19)
+      svelte-dnd-action:
+        specifier: ^0.9.52
+        version: 0.9.52(svelte@4.2.19)
       svelte-eslint-parser:
         specifier: ^0.34.1
         version: 0.34.1(svelte@4.2.19)
+      tailwind-merge:
+        specifier: ^2.5.5
+        version: 2.5.5
+      tailwind-variants:
+        specifier: ^0.2.1
+        version: 0.2.1(tailwindcss@3.4.15)
       tailwindcss:
-        specifier: ^3.4.3
+        specifier: ^3.4.15
         version: 3.4.15
+      ts-pattern:
+        specifier: ^5.5.0
+        version: 5.5.0
       typescript:
-        specifier: ^5.4.5
+        specifier: ^5.7.2
         version: 5.7.2
       vite:
-        specifier: ^5.2.11
+        specifier: ^5.4.11
         version: 5.4.11
 
 packages:
@@ -447,8 +446,8 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
 
-  '@sveltejs/kit@2.8.4':
-    resolution: {integrity: sha512-oDSBHPokbP2iaQlHiEWAkVLsIugsXve8YtABtlyHBUljA63Wgx0UtV8MSOQOGpRft1M+Cd5rzer+0SFlppQwOg==}
+  '@sveltejs/kit@2.8.5':
+    resolution: {integrity: sha512-5ry1jPd4r9knsphDK2eTYUFPhFZMqF0PHFfa8MdMQCqWaKwLSXdFMU/Vevih1I7C1/VNB5MvTuFl1kXu5vx8UA==}
     engines: {node: '>=18.13'}
     hasBin: true
     peerDependencies:
@@ -1352,8 +1351,8 @@ packages:
       prettier: ^3.0.0
       svelte: ^3.2.0 || ^4.0.0-next.0 || ^5.0.0-next.0
 
-  prettier@3.3.3:
-    resolution: {integrity: sha512-i2tDNA0O5IrMO757lfrdQZCc2jPNDVntV0m/+4whiDfWaTKfMNgR7Qz0NAeGz/nRqF4m5/6CLzbP4/liHt12Ew==}
+  prettier@3.4.1:
+    resolution: {integrity: sha512-G+YdqtITVZmOJje6QkXQWzl3fSfMxFwm1tjTyo9exhkmWSqC4Yhd1+lug++IlR2mvRVAxEDDWYkQdeSztajqgg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -1944,11 +1943,11 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.27.4':
     optional: true
 
-  '@sveltejs/adapter-static@3.0.6(@sveltejs/kit@2.8.4(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.11))(svelte@4.2.19)(vite@5.4.11))':
+  '@sveltejs/adapter-static@3.0.6(@sveltejs/kit@2.8.5(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.11))(svelte@4.2.19)(vite@5.4.11))':
     dependencies:
-      '@sveltejs/kit': 2.8.4(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.11))(svelte@4.2.19)(vite@5.4.11)
+      '@sveltejs/kit': 2.8.5(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.11))(svelte@4.2.19)(vite@5.4.11)
 
-  '@sveltejs/kit@2.8.4(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.11))(svelte@4.2.19)(vite@5.4.11)':
+  '@sveltejs/kit@2.8.5(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.11))(svelte@4.2.19)(vite@5.4.11)':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@4.2.19)(vite@5.4.11)
       '@types/cookie': 0.6.0
@@ -2835,12 +2834,12 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-svelte@3.3.2(prettier@3.3.3)(svelte@4.2.19):
+  prettier-plugin-svelte@3.3.2(prettier@3.4.1)(svelte@4.2.19):
     dependencies:
-      prettier: 3.3.3
+      prettier: 3.4.1
       svelte: 4.2.19
 
-  prettier@3.3.3: {}
+  prettier@3.4.1: {}
 
   punycode@2.3.1: {}
 
