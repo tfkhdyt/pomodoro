@@ -1,6 +1,6 @@
 [package]
 name = "pomodoro"
-version = "0.7.1"
+version = "0.9.0"
 description = "Minimalistic Pomodoro Timer App Written In Tauri and SvelteKit"
 authors = ["tfkhdyt"]
 license = ""
@@ -12,23 +12,18 @@ rust-version = "1.60"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.5", features = [] }
+tauri-build = { version = "2", features = [] }
 
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.6", features = [ "process-exit",
-  "fs-create-dir",
-  "fs-write-file",
-  "fs-read-file",
-  "fs-read-dir",
-  "fs-exists",
-  "path-all",
-  "dialog-confirm",
-  "window-set-title",
-  "notification-all",
+tauri = { version = "2", features = [
 ] }
 rodio = "0.18"
+tauri-plugin-notification = "2"
+tauri-plugin-process = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.

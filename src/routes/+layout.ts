@@ -3,42 +3,46 @@ export const ssr = false;
 
 import {
 	BaseDirectory,
-	createDir,
 	exists,
+	mkdir,
 	readTextFile,
 	writeTextFile
-} from '@tauri-apps/api/fs';
+} from '@tauri-apps/plugin-fs';
 import type { LayoutLoad } from './$types';
 import type { Config, Data } from '@/types';
 import { defaultConfig } from '@/constants';
 
 export const load: LayoutLoad = async () => {
-	const isConfigDirExists = await exists('', { dir: BaseDirectory.AppConfig });
+	const isConfigDirExists = await exists('', {
+		baseDir: BaseDirectory.AppConfig
+	});
 	if (!isConfigDirExists) {
-		await createDir('', { dir: BaseDirectory.AppConfig });
+		await mkdir('', { baseDir: BaseDirectory.AppConfig });
 	}
 
 	const isConfigFileExists = await exists('config.json', {
-		dir: BaseDirectory.AppConfig
+		baseDir: BaseDirectory.AppConfig
 	});
 	if (!isConfigFileExists) {
 		await writeTextFile('config.json', JSON.stringify(defaultConfig, null, 2), {
-			dir: BaseDirectory.AppConfig
+			baseDir: BaseDirectory.AppConfig
 		});
 	}
 
 	const contents = await readTextFile('config.json', {
-		dir: BaseDirectory.AppConfig
+		baseDir: BaseDirectory.AppConfig
 	});
 	const currentConfig = JSON.parse(contents) as Config;
 
-	const isDataDirExists = await exists('', { dir: BaseDirectory.AppData });
+	const isDataDirExists = await exists('', {
+		baseDir: BaseDirectory.AppData
+	});
 	if (!isDataDirExists) {
-		await createDir('', { dir: BaseDirectory.AppData });
+		await mkdir('', { baseDir: BaseDirectory.AppData });
 	}
 
 	const isDataFileExists = await exists('data.json', {
-		dir: BaseDirectory.AppData
+		baseDir: BaseDirectory.AppData
 	});
 	if (!isDataFileExists) {
 		await writeTextFile(
@@ -55,12 +59,14 @@ export const load: LayoutLoad = async () => {
 				2
 			),
 			{
-				dir: BaseDirectory.AppData
+				baseDir: BaseDirectory.AppData
 			}
 		);
 	}
 
-	const data = await readTextFile('data.json', { dir: BaseDirectory.AppData });
+	const data = await readTextFile('data.json', {
+		baseDir: BaseDirectory.AppData
+	});
 	const currentData = JSON.parse(data) as Data;
 	currentData.reps ??= 1;
 	currentData.pomodoroState ??= 'pomodoro';

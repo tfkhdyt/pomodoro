@@ -1,8 +1,8 @@
 <script lang="ts">
 	import * as DropdownMenu from '@/components/ui/dropdown-menu';
 	import type { Task } from '@/types';
-	import { confirm } from '@tauri-apps/api/dialog';
-	import { sendNotification } from '@tauri-apps/api/notification';
+	import { confirm } from '@tauri-apps/plugin-dialog';
+	import { sendNotification } from '@tauri-apps/plugin-notification';
 	import {
 		EllipsisVerticalIcon,
 		ListChecksIcon,

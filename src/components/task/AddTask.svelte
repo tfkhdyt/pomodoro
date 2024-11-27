@@ -6,7 +6,7 @@
 	import { Textarea } from '../ui/textarea';
 	import { Button } from '../ui/button';
 	import { SaveIcon } from 'lucide-svelte';
-	import { sendNotification } from '@tauri-apps/api/notification';
+	import { sendNotification } from '@tauri-apps/plugin-notification';
 	import type { LayoutData } from '../../routes/$types';
 
 	export let data: LayoutData;

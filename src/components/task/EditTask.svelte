@@ -6,7 +6,7 @@
 	import { Button } from '../ui/button';
 	import { SaveIcon } from 'lucide-svelte';
 	import { showEditTaskModal, editTaskData } from '@/stores/edit-task';
-	import { sendNotification } from '@tauri-apps/api/notification';
+	import { sendNotification } from '@tauri-apps/plugin-notification';
 	import type { Data } from '@/types';
 
 	export let appData: Data;

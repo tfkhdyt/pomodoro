@@ -19,7 +19,7 @@ SvelteKit, inspired by pomofocus.io
 
 ### Requirements
 
-- Bun (Node.js also supported)
+- Node.js
 - Rust
 
 ### Installation
@@ -34,24 +34,24 @@ git clone https://github.com/tfkhdyt/pomodoro.git
 
 ```bash
 cd pomodoro
-bun install
+pnpm install
 ```
 
 1. Build the app
 
 ```bash
 # linux (debian)
-bun tauri build -b deb
+pnpm tauri build -b deb
 
 # windows (exe)
-bun tauri build -b nsis
+pnpm tauri build -b nsis
 
 # windows (msi)
-bun tauri build -b msi
+pnpm tauri build -b msi
 
 # macOS (app)
-bun tauri build -b app
+pnpm tauri build -b app
 
 # macOS (dmg)
-bun tauri build -b dmg
+pnpm tauri build -b dmg
 ```

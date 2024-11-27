@@ -6,11 +6,11 @@
 	import { Label } from '@/components/ui/label';
 	import { Switch } from '@/components/ui/switch';
 	import { Button } from '@/components/ui/button';
-	import { BaseDirectory, writeTextFile } from '@tauri-apps/api/fs';
+	import { BaseDirectory, writeTextFile } from '@tauri-apps/plugin-fs';
 	import { defaultConfig } from '@/constants';
 	import type { LayoutData } from '../routes/$types';
 	import { invalidateAll } from '$app/navigation';
-	import { sendNotification } from '@tauri-apps/api/notification';
+	import { sendNotification } from '@tauri-apps/plugin-notification';
 	import {
 		ClockIcon,
 		InfoIcon,
@@ -34,7 +34,7 @@
 		// 	}
 		// };
 		await writeTextFile('config.json', JSON.stringify(data.config, null, 2), {
-			dir: BaseDirectory.AppConfig
+			baseDir: BaseDirectory.AppConfig
 		});
 
 		await invalidateAll();
@@ -43,7 +43,7 @@
 
 	async function restoreDefault() {
 		await writeTextFile('config.json', JSON.stringify(defaultConfig, null, 2), {
-			dir: BaseDirectory.AppConfig
+			baseDir: BaseDirectory.AppConfig
 		});
 
 		await invalidateAll();

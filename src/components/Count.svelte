@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { appWindow } from '@tauri-apps/api/window';
+	import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 	import { match } from 'ts-pattern';
 	import type { LayoutData } from '../routes/$types';
+	const appWindow = getCurrentWebviewWindow();
 
 	export let data: LayoutData;
 	export let resetReps: () => Promise<void>;

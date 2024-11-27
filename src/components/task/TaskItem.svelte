@@ -10,8 +10,8 @@
 		Trash2Icon
 	} from 'lucide-svelte';
 	import { match } from 'ts-pattern';
-	import { sendNotification } from '@tauri-apps/api/notification';
-	import { confirm } from '@tauri-apps/api/dialog';
+	import { sendNotification } from '@tauri-apps/plugin-notification';
+	import { confirm } from '@tauri-apps/plugin-dialog';
 	import { editTaskData, showEditTaskModal } from '@/stores/edit-task';
 
 	export let buttonState: ButtonState;
@@ -41,7 +41,7 @@
 	async function setActiveTask(id: number) {
 		if (buttonState === 'playing') {
 			const confirmed = await confirm('Do you want to switch task?', {
-				type: 'warning'
+				kind: 'warning'
 			});
 
 			if (!confirmed) {

@@ -1,97 +1,72 @@
 {
-	"$schema": "../node_modules/@tauri-apps/cli/schema.json",
-	"build": {
-		"beforeBuildCommand": "bun run build",
-		"beforeDevCommand": "bun dev",
-		"devPath": "http://localhost:5173",
-		"distDir": "../build"
-	},
-	"package": {
-		"productName": "Pomodoro",
-		"version": "0.8.2"
-	},
-	"tauri": {
-		"allowlist": {
-			"notification": {
-				"all": true
-			},
-			"window": {
-				"setTitle": true
-			},
-			"dialog": {
-				"confirm": true
-			},
-			"path": {
-				"all": true
-			},
-			"fs": {
-				"scope": [
-					"$CONFIG/**/*",
-					"$APPCONFIG/*",
-					"$DATA/**/*",
-					"$APPDATA/*",
-					"$RESOURCE/audio/button-press.wav",
-					"$RESOURCE/audio/alarm-kitchen.mp3"
-				],
-				"readFile": true,
-				"writeFile": true,
-				"readDir": true,
-				"createDir": true,
-				"exists": true
-			},
-			"process": {
-				"exit": true
-			}
-		},
-		"bundle": {
-			"active": true,
-			"category": "DeveloperTool",
-			"copyright": "",
-			"deb": {
-				"depends": []
-			},
-			"externalBin": [],
-			"icon": [
-				"icons/32x32.png",
-				"icons/64x64.png",
-				"icons/128x128.png",
-				"icons/128x128@2x.png",
-				"icons/icon.icns",
-				"icons/icon.ico"
-			],
-			"identifier": "dev.tfkhdyt.pomodoro",
-			"longDescription": "Minimalistic Pomodoro Timer App Written In Tauri and SvelteKit",
-			"macOS": {
-				"entitlements": null,
-				"exceptionDomain": "",
-				"frameworks": [],
-				"providerShortName": null,
-				"signingIdentity": null
-			},
-			"resources": ["./audio/button-press.wav", "./audio/alarm-kitchen.mp3"],
-			"shortDescription": "Pomodoro Timer",
-			"targets": ["deb", "nsis"],
-			"windows": {
-				"certificateThumbprint": null,
-				"digestAlgorithm": "sha256",
-				"timestampUrl": ""
-			}
-		},
-		"security": {
-			"csp": null
-		},
-		"updater": {
-			"active": false
-		},
-		"windows": [
-			{
-				"fullscreen": false,
-				"height": 900,
-				"resizable": true,
-				"title": "Pomodoro",
-				"width": 700,
-				"minWidth": 500
-			}
-		]
-	}
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "build": {
+    "beforeBuildCommand": "pnpm build",
+    "beforeDevCommand": "pnpm dev",
+    "frontendDist": "../build",
+    "devUrl": "http://localhost:5173"
+  },
+  "bundle": {
+    "active": true,
+    "category": "Productivity",
+    "copyright": "",
+    "targets": [
+      "deb",
+      "nsis"
+    ],
+    "externalBin": [],
+    "icon": [
+      "icons/32x32.png",
+      "icons/64x64.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
+    },
+    "longDescription": "Minimalistic Pomodoro Timer App Written In Tauri and Svelte",
+    "macOS": {
+      "entitlements": null,
+      "exceptionDomain": "",
+      "frameworks": [],
+      "providerShortName": null,
+      "signingIdentity": null
+    },
+    "resources": [
+      "./audio/button-press.wav",
+      "./audio/alarm-kitchen.mp3"
+    ],
+    "shortDescription": "Pomodoro Timer",
+    "linux": {
+      "deb": {
+        "depends": []
+      }
+    }
+  },
+  "productName": "Pomodoro",
+  "mainBinaryName": "Pomodoro",
+  "version": "0.9.0",
+  "identifier": "dev.tfkhdyt.pomodoro",
+  "plugins": {},
+  "app": {
+    "windows": [
+      {
+        "fullscreen": false,
+        "height": 900,
+        "resizable": true,
+        "title": "Pomodoro",
+        "width": 700,
+        "minWidth": 500,
+        "useHttpsScheme": true,
+        "decorations": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  }
 }

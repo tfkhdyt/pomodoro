@@ -6,20 +6,20 @@
 	import Progress from '@/components/ui/progress/progress.svelte';
 	import type { ButtonState } from '@/types';
 	import { cn } from '@/utils';
-	import { window } from '@tauri-apps/api';
-	import { confirm } from '@tauri-apps/api/dialog';
+	import { webviewWindow } from '@tauri-apps/api';
+	import { confirm } from '@tauri-apps/plugin-dialog';
 	import { TauriEvent } from '@tauri-apps/api/event';
-	import { BaseDirectory, writeTextFile } from '@tauri-apps/api/fs';
+	import { BaseDirectory, writeTextFile } from '@tauri-apps/plugin-fs';
 	import {
 		isPermissionGranted,
 		requestPermission,
 		sendNotification
-	} from '@tauri-apps/api/notification';
-	import { invoke } from '@tauri-apps/api/tauri';
+	} from '@tauri-apps/plugin-notification';
+	import { invoke } from '@tauri-apps/api/core';
 	import { onDestroy, onMount } from 'svelte';
 	import { match } from 'ts-pattern';
 	import type { LayoutData } from './$types';
-	import { exit } from '@tauri-apps/api/process';
+	import { exit } from '@tauri-apps/plugin-process';
 
 	export let data: LayoutData;
 
@@ -38,8 +38,14 @@
 		.padStart(2, '0')}:${(timeLeft % 60).toString().padStart(2, '0')}`;
 	$: progress = 100 - (timeLeft / 60 / targetMinutes) * 100;
 
+	let lastTimeInterval: number;
 	onMount(() => {
 		timeLeft = data.appData.lastTime ?? targetMinutes * 60;
+
+		lastTimeInterval = setInterval(async () => {
+			data.appData.lastTime = timeLeft;
+			await save();
+		}, 5000);
 	});
 
 	let intervalId: number;
@@ -53,11 +59,13 @@
 		askNotifPermission();
 	}
 
-	window.getCurrent().listen(TauriEvent.WINDOW_CLOSE_REQUESTED, async () => {
-		data.appData.lastTime = timeLeft;
-		await save();
-		await exit();
-	});
+	webviewWindow
+		.getCurrentWebviewWindow()
+		.listen(TauriEvent.WINDOW_CLOSE_REQUESTED, async () => {
+			data.appData.lastTime = timeLeft;
+			await save();
+			await exit();
+		});
 
 	async function askNotifPermission() {
 		const permission = await requestPermission();
@@ -212,7 +220,7 @@
 		const confirmed = await confirm(
 			'Do you want to reset the pomodoro count?',
 			{
-				type: 'warning'
+				kind: 'warning'
 			}
 		);
 
@@ -237,7 +245,7 @@
 
 	async function save() {
 		await writeTextFile('data.json', JSON.stringify(data.appData, null, 2), {
-			dir: BaseDirectory.AppData
+			baseDir: BaseDirectory.AppData
 		});
 
 		await invalidateAll();
@@ -245,6 +253,7 @@
 
 	onDestroy(() => {
 		clearInterval(intervalId);
+		clearInterval(lastTimeInterval);
 	});
 </script>
 
