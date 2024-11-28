@@ -9,7 +9,6 @@
 	import { webviewWindow } from '@tauri-apps/api';
 	import { invoke } from '@tauri-apps/api/core';
 	import { TauriEvent } from '@tauri-apps/api/event';
-	import { resourceDir } from '@tauri-apps/api/path';
 	import { confirm } from '@tauri-apps/plugin-dialog';
 	import { BaseDirectory, writeTextFile } from '@tauri-apps/plugin-fs';
 	import {
@@ -52,10 +51,8 @@
 	let intervalId: number;
 
 	let permissionGranted: boolean;
-	let myResourceDir: string;
 	(async () => {
 		permissionGranted = await isPermissionGranted();
-		myResourceDir = await resourceDir();
 	})();
 
 	$: if (!permissionGranted) {
@@ -270,7 +267,6 @@
 			.exhaustive(),
 		data.appData.tasks.length === 0 && 'justify-center'
 	)}>
-	{myResourceDir}
 	<Progress
 		value={progress}
 		class={cn(
