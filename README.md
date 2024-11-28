@@ -1,5 +1,7 @@
 # Pomodoro
 
+![Screenshot_20241128_084032](https://github.com/user-attachments/assets/073ab0b9-8daa-4eeb-9746-9e8541d2a31f)
+
 A minimalistic Pomodoro timer desktop application built with Tauri and
 SvelteKit, inspired by pomofocus.io
 
