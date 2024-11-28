@@ -24,20 +24,22 @@ SvelteKit, inspired by pomofocus.io
 
 ### Installation
 
+#### Build from source
+
 1. Clone the repository
 
 ```bash
 git clone https://github.com/tfkhdyt/pomodoro.git
 ```
 
-1. Install dependencies
+2. Install dependencies
 
 ```bash
 cd pomodoro
 pnpm install
 ```
 
-1. Build the app
+3. Build the app
 
 ```bash
 # linux (debian)
