@@ -23,7 +23,7 @@
   webkitgtk_4_1,
   alsa-lib,
   zlib,
-  pnpm,
+  pnpm_9,
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -35,7 +35,7 @@ rustPlatform.buildRustPackage rec {
     lockFile = ./src-tauri/Cargo.lock;
   };
 
-  pnpmDeps = pnpm.fetchDeps {
+  pnpmDeps = pnpm_9.fetchDeps {
     inherit pname version src;
     hash = "sha256-pk4ask944MHmJYZNxi1q7DWMm9yNdvNi7FGXGtXewk8=";
   };
@@ -44,7 +44,7 @@ rustPlatform.buildRustPackage rec {
     cargo-tauri.hook
 
     nodejs_22
-    pnpm.configHook
+    pnpm_9.configHook
 
     pkg-config
     wrapGAppsHook3
@@ -89,6 +89,6 @@ rustPlatform.buildRustPackage rec {
     description = "Minimalistic Pomodoro Timer Desktop App";
     license = lib.licenses.gpl3Only;
     maintainers = with lib.maintainers; [ tfkhdyt ];
-    mainProgram = "pomodoro";
+    mainProgram = "minipom";
   };
 }
