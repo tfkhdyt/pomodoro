@@ -10,7 +10,11 @@
 		"active": true,
 		"category": "Productivity",
 		"copyright": "",
-		"targets": ["deb", "nsis", "appimage"],
+		"targets": [
+			"deb",
+			"nsis",
+			"appimage"
+		],
 		"externalBin": [],
 		"icon": [
 			"icons/32x32.png",
@@ -33,7 +37,10 @@
 			"providerShortName": null,
 			"signingIdentity": null
 		},
-		"resources": ["./audio/button-press.wav", "./audio/alarm-kitchen.mp3"],
+		"resources": [
+			"./audio/button-press.wav",
+			"./audio/alarm-kitchen.mp3"
+		],
 		"shortDescription": "Pomodoro Timer",
 		"linux": {
 			"appimage": {
@@ -46,7 +53,7 @@
 	},
 	"productName": "Minipom",
 	"mainBinaryName": "minipom",
-	"version": "0.9.2",
+	"version": "0.9.3",
 	"identifier": "id.my.tfkhdyt.minipom",
 	"plugins": {},
 	"app": {
