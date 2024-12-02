@@ -26,6 +26,41 @@ SvelteKit, inspired by pomofocus.io
 
 ### Installation
 
+#### Nix Flakes
+
+1. Add flake input
+
+```nix
+{
+    inputs.minipom = {
+      url = "github:tfkhdyt/minipom?ref=v0.9.3";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+}
+```
+
+2. Put the package to your systemPackages
+
+```nix
+environment.systemPackages = [
+    inputs.minipom.packages.${pkgs.system}.default
+];
+```
+
+3. Or to your home manager packages
+
+```nix
+{ inputs, ... }: {
+    home.packages = [
+        inputs.minipom.packages.${pkgs.system}.default
+    ];
+}
+```
+
+#### Nixpkgs
+
+Coming soon
+
 #### Build from source
 
 1. Clone the repository
