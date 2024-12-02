@@ -27,13 +27,4 @@
       #   ];
       # };
     };
-
-  nixConfig = {
-    extra-substituters = [
-      "https://minipom.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "minipom.cachix.org-1:gluukChdyxrUneN+KVt+sGDFzvYrFT465ZbFmtTDA4w="
-    ];
-  };
 }
