@@ -16,13 +16,13 @@
 		switch (data.appData.pomodoroState) {
 			case 'pomodoro':
 				await appWindow.setTitle(
-					`${currentTaskTitle ?? 'Time to focus!'} — Pomodoro`
+					`${currentTaskTitle ?? 'Time to focus!'} — Minipom`
 				);
 				break;
 			case 'short-break':
 			case 'long-break':
 				await appWindow.setTitle(
-					`${currentTaskTitle ?? 'Time for a break!'} — Pomodoro`
+					`${currentTaskTitle ?? 'Time for a break!'} — Minipom`
 				);
 				break;
 		}
