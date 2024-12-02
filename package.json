@@ -1,6 +1,6 @@
 {
-  "name": "pomodoro",
-  "version": "0.7.1",
+  "name": "minipom",
+  "version": "0.9.3",
   "private": true,
   "scripts": {
     "dev": "vite dev",

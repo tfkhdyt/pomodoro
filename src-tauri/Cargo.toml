@@ -1,11 +1,11 @@
 [package]
-name = "pomodoro"
-version = "0.9.1"
+name = "minipom"
+version = "0.9.3"
 description = "Minimalistic Pomodoro Timer App Written In Tauri and SvelteKit"
 authors = ["tfkhdyt"]
 license = ""
 repository = ""
-default-run = "pomodoro"
+default-run = "minipom"
 edition = "2021"
 rust-version = "1.60"
 

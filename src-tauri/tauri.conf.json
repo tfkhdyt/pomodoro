@@ -44,10 +44,10 @@
 			}
 		}
 	},
-	"productName": "Pomodoro",
-	"mainBinaryName": "pomodoro",
+	"productName": "Minipom",
+	"mainBinaryName": "minipom",
 	"version": "0.9.2",
-	"identifier": "dev.tfkhdyt.pomodoro",
+	"identifier": "id.my.tfkhdyt.minipom",
 	"plugins": {},
 	"app": {
 		"windows": [
@@ -55,7 +55,7 @@
 				"fullscreen": false,
 				"height": 900,
 				"resizable": true,
-				"title": "Pomodoro",
+				"title": "Minipom",
 				"width": 700,
 				"minWidth": 500,
 				"useHttpsScheme": true,
