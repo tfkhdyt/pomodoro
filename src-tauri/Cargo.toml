@@ -1,6 +1,6 @@
 [package]
 name = "minipom"
-version = "0.9.3"
+version = "0.9.4"
 description = "Minimalistic Pomodoro Timer App Written In Tauri and SvelteKit"
 authors = ["tfkhdyt"]
 license = ""
