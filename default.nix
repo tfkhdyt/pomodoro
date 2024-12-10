@@ -35,22 +35,29 @@ rustPlatform.buildRustPackage rec {
     lockFile = ./src-tauri/Cargo.lock;
   };
 
+  cargoRoot = "src-tauri";
+  buildAndTestSubdir = cargoRoot;
+
   pnpmDeps = pnpm_9.fetchDeps {
     inherit pname version src;
     hash = "sha256-pk4ask944MHmJYZNxi1q7DWMm9yNdvNi7FGXGtXewk8=";
   };
 
-  nativeBuildInputs = [
-    cargo-tauri.hook
+  nativeBuildInputs =
+    [
+      cargo-tauri.hook
 
-    nodejs_22
-    pnpm_9.configHook
+      nodejs_22
+      pnpm_9.configHook
 
-    pkg-config
-    wrapGAppsHook3
+      pkg-config
+      wrapGAppsHook3
 
-    gobject-introspection
-  ];
+      gobject-introspection
+    ]
+    ++ lib.optionals stdenv.hostPlatform.isDarwin [
+      rustPlatform.bindgenHook
+    ];
 
   buildInputs =
     [ openssl ]
@@ -81,8 +88,7 @@ rustPlatform.buildRustPackage rec {
       ]
     );
 
-  cargoRoot = "src-tauri";
-  buildAndTestSubdir = cargoRoot;
+  doCheck = false; # no tests
 
   meta = {
     homepage = "https://github.com/tfkhdyt/minipom";
