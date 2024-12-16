@@ -53,7 +53,7 @@
 	},
 	"productName": "Minipom",
 	"mainBinaryName": "minipom",
-	"version": "0.9.4",
+	"version": "0.9.5",
 	"identifier": "id.my.tfkhdyt.minipom",
 	"plugins": {},
 	"app": {
@@ -67,7 +67,7 @@
 				"height": 900,
 				"minHeight": 753,
 				"useHttpsScheme": true,
-				"decorations": false
+				"decorations": true
 			}
 		],
 		"security": {
